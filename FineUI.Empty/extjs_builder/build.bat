@@ -113,6 +113,7 @@ type js\F\F.format.js >> _f
 type js\ux\FormViewport.js >> _f
 type js\ux\SimplePagingToolbar.js >> _f
 type js\ux\TabCloseMenu.js >> _f
+type js\ux\Notification.js >> _f
 type extjs_source_all\examples\ux\RowExpander.js >> _f
 
 type _f > ..\extjs\ext-part2.js
