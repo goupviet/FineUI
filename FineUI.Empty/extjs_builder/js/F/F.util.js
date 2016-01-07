@@ -56,6 +56,14 @@ F.confirm = function () {
     F.util.confirm.apply(null, arguments);
 };
 
+// add by wz
+F.show = function () {
+    F.util.show.apply(null, arguments);
+};
+// add by wz
+F.notify = function () {
+    F.util.notify.apply(null, arguments);
+};
 F.toggle = function (el, className) {
     Ext.get(el).toggleCls(className);
 };
@@ -1207,6 +1215,47 @@ Ext.onReady(function () {
             return icon;
         },
 
+        // add by wz
+        getButtonText: function (buttonsShortName, okText, cancelText, yesText, noText) {
+            var buttonText = {};
+            if (buttonsShortName === '_cancel') {
+                buttonText = { cancel: cancelText || Ext.MessageBox.buttonText.cancel };
+            } else if (buttonsShortName === '_no') {
+                buttonText = { no: noText || Ext.MessageBox.buttonText.no };
+            } else if (buttonsShortName === '_ok') {
+                buttonText = { ok: okText || Ext.MessageBox.buttonText.ok };
+            } else if (buttonsShortName === '_ok_cancel') {
+                buttonText = { cancel: cancelText || Ext.MessageBox.buttonText.cancel, ok: okText || Ext.MessageBox.buttonText.ok };
+            } else if (buttonsShortName === '_yes') {
+                buttonText = { yes: yesText || Ext.MessageBox.buttonText.yes };
+            } else if (buttonsShortName === '_yes_no') {
+                buttonText = { yes: yesText || Ext.MessageBox.buttonText.yes, no: noText || Ext.MessageBox.buttonText.no };
+            } else if (buttonsShortName === '_yes_no_cancel') {
+                buttonText = { yes: yesText || Ext.MessageBox.buttonText.yes, no: noText || Ext.MessageBox.buttonText.no, cancel: cancelText || Ext.MessageBox.buttonText.cancel };
+            }
+            return buttonText;
+        },
+        // 消息框按钮样式
+        // add by wz
+        getMessageBoxButtons: function (buttonsShortName) {
+            var buttons = Ext.MessageBox.OK;
+            if (buttonsShortName === '_cancel') {
+                buttons = Ext.MessageBox.CANCEL;
+            } else if (buttonsShortName === '_no') {
+                buttons = Ext.MessageBox.NO;
+            } else if (buttonsShortName === '_ok') {
+                buttons = Ext.MessageBox.OK;
+            } else if (buttonsShortName === '_ok_cancel') {
+                buttons = Ext.MessageBox.OKCANCEL;
+            } else if (buttonsShortName === '_yes') {
+                buttons = Ext.MessageBox.YES;
+            } else if (buttonsShortName === '_yes_no') {
+                buttons = Ext.MessageBox.YESNO;
+            } else if (buttonsShortName === '_yes_no_cancel') {
+                buttons = Ext.MessageBox.YESNOCANCEL;
+            }
+            return buttons;
+        },
         // 确认对话框
         confirm: function (targetName, title, msg, okScript, cancelScript, iconShortName) {
             var wnd = F.util.getTargetWindow(targetName);
@@ -1227,7 +1276,7 @@ Ext.onReady(function () {
                         } else {
                             return false;
                         }
-                    } else {
+                    } else if (btn == 'ok') {
                         if (okScript) {
                             if (typeof (okScript) === 'string') {
                                 new Function(okScript)();
@@ -1237,7 +1286,90 @@ Ext.onReady(function () {
                         } else {
                             return false;
                         }
+                    } else return false;
                     }
+            });
+        },
+        notify: function(targetName, title,  msg, type) {
+            var wnd = F.util.getTargetWindow(targetName);
+            var icon = 'ux-notification-icon-info';
+            if (type === 'error') icon = 'ux-notification-icon-error';
+            else if (type === 'success') icon = 'ux-notification-icon-success';
+            else if (type === 'info') icon = 'ux-notification-icon-information';
+            else if (type === 'warn') icon = 'ux-notification-icon-warn';
+            wnd.Ext.create('widget.uxNotification', {
+                title: title,
+                position: 'br',
+                cls: 'ux-notification-light',
+                iconCls: icon,
+                spacing: 20,
+                html: msg,
+                slideInDuration: 800,
+                slideBackDuration: 1500,
+                autoCloseDelay: 4000,
+                slideInAnimation: 'elasticIn',
+                slideBackAnimation: 'elasticIn'
+            }).show();
+        },
+        // 自定义对话框
+        show: function(targetName, title, msg, buttonsShortName, okScript, cancelScript, yesScript, noScript, iconShortName, okText, cancelText, yesText, noText) {
+            var wnd = F.util.getTargetWindow(targetName);
+            var icon = F.util.getMessageBoxIcon(iconShortName);
+            var buttonText = F.util.getButtonText(buttonsShortName, okText, cancelText, yesText, noText);
+            var buttons = F.util.getMessageBoxButtons(buttonsShortName);
+            var width = 250;
+            if (buttonsShortName === '_yes_no_cancel') {
+                width = 260;
+            }
+            wnd.Ext.MessageBox.show({
+                title: title || F.util.confirmTitle,
+                minWidth: width,
+                msg: msg,
+                buttons: buttons,
+                buttonText: buttonText,
+                icon: icon,
+                fn: function(btn) {
+                    if (btn == 'cancel') {
+                        if (cancelScript) {
+                            if (typeof (cancelScript) === 'string') {
+                                new Function(cancelScript)();
+                            } else {
+                                cancelScript.apply(wnd);
+                            }
+                        } else {
+                            return false;
+                        }
+                    } else if (btn == 'ok') {
+                        if (okScript) {
+                            if (typeof (okScript) === 'string') {
+                                new Function(okScript)();
+                            } else {
+                                okScript.apply(wnd);
+                            }
+                        } else {
+                            return false;
+                        }
+                    } else if (btn == 'yes') {
+                        if (yesScript) {
+                            if (typeof (yesScript) === 'string') {
+                                new Function(yesScript)();
+                            } else {
+                                yesScript.apply(wnd);
+                            }
+                        } else {
+                            return false;
+                        }
+                    } else if (btn == 'no') {
+                        if (noScript) {
+                            if (typeof (noScript) === 'string') {
+                                new Function(noScript)();
+                            } else {
+                                noScript.apply(wnd);
+                            }
+                        } else {
+                            return false;
+                        }
+                    } else return false;
                 }
             });
         },

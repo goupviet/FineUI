@@ -445,7 +445,6 @@ namespace FineUI
             }
         }
 
-
         /// <summary>
         /// 排序方向("ASC", "DESC")
         /// </summary>
@@ -567,6 +566,29 @@ namespace FineUI
 
         #endregion
 
+        #region EnableColumnHide
+
+        /// <summary>
+        /// 允许隐藏/显示列
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue(false)]
+        [Description("允许隐藏/显示列")]
+        public bool EnableColumnHide
+        {
+            get
+            {
+                object obj = FState["EnableColumnHide"];
+                return obj == null ? false : (bool)obj;
+            }
+            set
+            {
+                FState["EnableColumnHide"] = value;
+            }
+        }
+
+        #endregion
+
         #region EnableSummary
 
         /// <summary>
@@ -643,6 +665,200 @@ namespace FineUI
         //        FState["SummaryHidden"] = value;
         //    }
         //}
+
+        #endregion
+
+        #region EnableGroup
+
+        /// <summary>
+        /// 启用分组
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue(false)]
+        [Description("启用分组")]
+        public bool EnableGroup
+        {
+            get
+            {
+                object obj = FState["EnableGroup"];
+                return obj == null ? false : (bool)obj;
+            }
+            set
+            {
+                FState["EnableGroup"] = value;
+            }
+        }
+
+        /// <summary>
+        /// 分组列，包含在store对象中
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue("")]
+        [Description("分组列")]
+        public string GroupField
+        {
+            get
+            {
+                object obj = FState["GroupField"];
+                return obj == null ? "" : (string)obj;
+            }
+            set
+            {
+                FState["GroupField"] = value;
+            }
+        }
+
+        /// <summary>
+        /// 分组表头
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue("")]
+        [Description("分组表头")]
+        public string GroupHeader
+        {
+            get
+            {
+                object obj = FState["GroupHeader"];
+                return obj == null ? "" : (string)obj;
+            }
+            set
+            {
+                FState["GroupHeader"] = value;
+            }
+        }
+
+        /// <summary>
+        /// 允许折叠
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue(true)]
+        [Description("允许折叠")]
+        public bool EnableGroupCollapse
+        {
+            get
+            {
+                object obj = FState["EnableGroupCollapse"];
+                return obj == null ? true : (bool)obj;
+            }
+            set
+            {
+                FState["EnableGroupCollapse"] = value;
+            }
+        }
+
+        /// <summary>
+        /// 初始化时全部折叠
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue(false)]
+        [Description("初始化时全部折叠")]
+        public bool GroupStartCollapsed
+        {
+            get
+            {
+                object obj = FState["GroupStartCollapsed"];
+                return obj == null ? false : (bool)obj;
+            }
+            set
+            {
+                FState["GroupStartCollapsed"] = value;
+            }
+        }
+
+        /// <summary>
+        /// 允许显示分组菜单
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue(true)]
+        [Description("允许显示分组菜单")]
+        public bool EnableGroupMenu
+        {
+            get
+            {
+                object obj = FState["EnableGroupMenu"];
+                return obj == null ? true : (bool)obj;
+            }
+            set
+            {
+                FState["EnableGroupMenu"] = value;
+            }
+        }
+
+        /// <summary>
+        /// 启用分组折叠事件
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue(false)]
+        [Description("启用分组折叠事件")]
+        public bool EnableGroupCollapseEvent
+        {
+            get
+            {
+                object obj = FState["EnableGroupCollapseEvent"];
+                return obj == null ? false : (bool)obj;
+            }
+            set
+            {
+                FState["EnableGroupCollapseEvent"] = value;
+            }
+        }
+
+        /// <summary>
+        /// 启用分组展开事件
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue(false)]
+        [Description("启用分组展开事件")]
+        public bool EnableGroupExpandEvent
+        {
+            get
+            {
+                object obj = FState["EnableGroupExpandEvent"];
+                return obj == null ? false : (bool)obj;
+            }
+            set
+            {
+                FState["EnableGroupExpandEvent"] = value;
+            }
+        }
+
+        /// <summary>
+        /// 启用分组点击事件
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue(false)]
+        [Description("启用分组点击事件")]
+        public bool EnableGroupClickEvent
+        {
+            get
+            {
+                object obj = FState["EnableGroupClickEvent"];
+                return obj == null ? false : (bool)obj;
+            }
+            set
+            {
+                FState["EnableGroupClickEvent"] = value;
+            }
+        }
+
+        /// <summary>
+        /// 启用分组双击事件
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue(false)]
+        [Description("启用分组双击事件，仅当EnableGroupCollapse=false时起作用")]
+        public bool EnableGroupDoubleClickEvent
+        {
+            get
+            {
+                object obj = FState["EnableGroupDoubleClickEvent"];
+                return obj == null ? false : (bool)obj;
+            }
+            set
+            {
+                FState["EnableGroupDoubleClickEvent"] = value;
+            }
+        }
 
         #endregion
 
@@ -947,14 +1163,14 @@ namespace FineUI
         /// 启用表格列分隔线（默认为false）
         /// </summary>
         [Category(CategoryName.OPTIONS)]
-        [DefaultValue(false)]
+        [DefaultValue(true)]
         [Description("启用表格列分隔线（默认为false）")]
         public bool EnableColumnLines
         {
             get
             {
                 object obj = FState["EnableColumnLines"];
-                return obj == null ? false : (bool)obj;
+                return obj == null ? true : (bool)obj;
             }
             set
             {
@@ -1349,14 +1565,14 @@ namespace FineUI
         /// 启用多选框
         /// </summary>
         [Category(CategoryName.OPTIONS)]
-        [DefaultValue(false)]
+        [DefaultValue(true)]
         [Description("启用多选框")]
         public bool EnableCheckBoxSelect
         {
             get
             {
                 object obj = FState["EnableCheckBoxSelect"];
-                return obj == null ? false : (bool)obj;
+                return obj == null ? true : (bool)obj;
             }
             set
             {
@@ -2424,7 +2640,7 @@ namespace FineUI
                 OB.AddProperty("rowLines", false);
             }
 
-            
+
 
             if (ForceFit)
             {
@@ -2567,13 +2783,48 @@ namespace FineUI
             //    OB.Listeners.AddProperty("headerclick", JsHelper.GetFunction(headerClickScript, "cmp", "columnIndex"), true);
             //}
 
+            if (!AllowSorting)
+            {
+                OB.AddProperty("sortableColumns", false);
+            }
+
             #endregion
 
-            #region EnableSummary
+            #region enableColumnHide
+
+            if (!EnableColumnHide)
+                OB.AddProperty("enableColumnHide", false);
+
+            #endregion
+
+            #region Enable Group & Summary
 
             JsArrayBuilder features = new JsArrayBuilder();
 
-            if (EnableSummary)
+            if (EnableGroup && EnableSummary)
+            {
+                JsObjectBuilder groupingSummaryFeature = new JsObjectBuilder();
+
+                groupingSummaryFeature.AddProperty("ftype", "groupingsummary");
+                groupingSummaryFeature.AddProperty("id", "groupingsummary");
+
+                //if (SummaryPosition != SummaryPosition.Flow)
+                //{
+                //    groupingSummaryFeature.AddProperty("dock", SummaryPositionHelper.GetName(SummaryPosition));
+                //}
+
+                if (!string.IsNullOrEmpty(GroupHeader))
+                    groupingSummaryFeature.AddProperty("groupHeaderTpl", GroupHeader, true);
+                if (!EnableGroupCollapse)
+                    groupingSummaryFeature.AddProperty("collapsible", EnableGroupCollapse);
+                if (!EnableGroupMenu)
+                    groupingSummaryFeature.AddProperty("enableGroupingMenu", EnableGroupMenu);
+                if (GroupStartCollapsed)
+                    groupingSummaryFeature.AddProperty("startCollapsed", GroupStartCollapsed);
+
+                features.AddProperty(groupingSummaryFeature);
+            }
+            else if (EnableSummary)
             {
                 JsObjectBuilder summaryFeature = new JsObjectBuilder();
                 summaryFeature.AddProperty("ftype", "summary");
@@ -2590,6 +2841,23 @@ namespace FineUI
                 //}
 
                 features.AddProperty(summaryFeature);
+            }
+            else if (EnableGroup)
+            {
+                JsObjectBuilder groupFeature = new JsObjectBuilder();
+                groupFeature.AddProperty("ftype", "grouping");
+                groupFeature.AddProperty("id", "grouping");
+
+                if (!string.IsNullOrEmpty(GroupHeader))
+                    groupFeature.AddProperty("groupHeaderTpl", GroupHeader, true);
+                if (!EnableGroupCollapse)
+                    groupFeature.AddProperty("collapsible", EnableGroupCollapse);
+                if (!EnableGroupMenu)
+                    groupFeature.AddProperty("enableGroupingMenu", EnableGroupMenu);
+                if (GroupStartCollapsed)
+                    groupFeature.AddProperty("startCollapsed", GroupStartCollapsed);
+
+                features.AddProperty(groupFeature);
             }
 
 
@@ -2756,6 +3024,43 @@ namespace FineUI
 
             //// Make sure SelectedRowIndexArray property exist in F_STATE during page's first load.
             //sb.Append(JsHelper.GetDeferScript(String.Format("{0}.f_selectRows();", XID), 200));
+
+            #endregion
+
+            #region GroupEvent
+
+            if (EnableGroupCollapseEvent)
+            {
+                string function = "var args='GroupCollapse$'+group;";
+                function += GetPostBackEventReference("#GroupCollapse#").Replace("'#GroupCollapse#'", "args");
+                string script = string.Format("{0}.getView().on('groupcollapse', function(view, node, group){{ {1} }});", XID, function);
+
+                PageContext.RegisterStartupScript(script);
+            }
+            if (EnableGroupExpandEvent)
+            {
+                string function = "var args='GroupExpand$'+group;";
+                function += GetPostBackEventReference("#GroupExpand$#").Replace("'#GroupExpand$#'", "args");
+                string script = string.Format("{0}.getView().on('groupexpand', function(view, node, group){{ {1} }});", XID, function);
+
+                PageContext.RegisterStartupScript(script);
+            }
+            if (EnableGroupClickEvent)
+            {
+                string function = "var args='GroupClick$'+group;";
+                function += GetPostBackEventReference("#GroupClick#").Replace("'#GroupClick#'", "args");
+                string script = string.Format("{0}.getView().on('groupclick', function(view, node, group){{ {1} }});", XID, function);
+
+                PageContext.RegisterStartupScript(script);
+            }
+            if (EnableGroupDoubleClickEvent)
+            {
+                string function = "var args='GroupDoubleClick$'+group;";
+                function += GetPostBackEventReference("#GroupDoubleClick#").Replace("'#GroupDoubleClick#'", "args");
+                string script = string.Format("{0}.getView().on('groupdblclick', function(view, node, group){{ {1} }});", XID, function);
+
+                PageContext.RegisterStartupScript(script);
+            }
 
             #endregion
         }
@@ -3019,7 +3324,7 @@ namespace FineUI
                     string rowSelectScript = JsHelper.GetFunction(validateScript, "model", "record", "index"); //String.Format("function(model,rowIndex){{{0}}}", validateScript);
 
                     selectOB.Listeners.AddProperty("select", rowSelectScript, true);
-                   
+
                 }
 
                 if (EnableCheckBoxSelect)
@@ -3078,6 +3383,9 @@ namespace FineUI
             storeBuilder.AddProperty("fields", Render_GridFieldsID, true);
 
             storeBuilder.AddProperty("remoteSort", true);
+
+            if (EnableGroup)
+                storeBuilder.AddProperty("groupField", GroupField);
 
             // 设置初始排序列
             if (AllowSorting)
@@ -4275,6 +4583,38 @@ namespace FineUI
                     OnAfterEdit(new GridAfterEditEventArgs(Convert.ToInt32(commandArgs[1]), commandArgs[2].ToString()));
                 }
             }
+            else if (eventArgument.StartsWith("GroupCollapse$"))
+            {
+                string[] commandArgs = eventArgument.Split('$');
+                if (commandArgs.Length == 2)
+                {
+                    OnGroupCollapse(new GridGroupEventArgs(commandArgs[1]));
+                }
+            }
+            else if (eventArgument.StartsWith("GroupExpand$"))
+            {
+                string[] commandArgs = eventArgument.Split('$');
+                if (commandArgs.Length == 2)
+                {
+                    OnGroupExpand(new GridGroupEventArgs(commandArgs[1]));
+                }
+            }
+            else if (eventArgument.StartsWith("GroupClick$"))
+            {
+                string[] commandArgs = eventArgument.Split('$');
+                if (commandArgs.Length == 2)
+                {
+                    OnGroupClick(new GridGroupEventArgs(commandArgs[1]));
+                }
+            }
+            else if (eventArgument.StartsWith("GroupDoubleClick$"))
+            {
+                string[] commandArgs = eventArgument.Split('$');
+                if (commandArgs.Length == 2)
+                {
+                    OnGroupDoubleClick(new GridGroupEventArgs(commandArgs[1]));
+                }
+            }
         }
 
         /// <summary>
@@ -4650,6 +4990,150 @@ namespace FineUI
         protected virtual void OnAfterEdit(GridAfterEditEventArgs e)
         {
             EventHandler<GridAfterEditEventArgs> handler = Events[_afterEditHandlerKey] as EventHandler<GridAfterEditEventArgs>;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        #endregion
+
+        #region OnGroupCollapse
+
+        private static readonly object _onGroupCollapseHandlerKey = new object();
+
+        /// <summary>
+        /// 分组折叠事件
+        /// </summary>
+        [Category(CategoryName.ACTION)]
+        [Description("分组折叠事件")]
+        public event EventHandler<GridGroupEventArgs> GroupCollapse
+        {
+            add
+            {
+                Events.AddHandler(_onGroupCollapseHandlerKey, value);
+            }
+            remove
+            {
+                Events.RemoveHandler(_onGroupCollapseHandlerKey, value);
+            }
+        }
+
+        /// <summary>
+        /// 触发分组折叠事件
+        /// </summary>
+        /// <param name="e">事件参数</param>
+        protected virtual void OnGroupCollapse(GridGroupEventArgs e)
+        {
+            EventHandler<GridGroupEventArgs> handler = Events[_onGroupCollapseHandlerKey] as EventHandler<GridGroupEventArgs>;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        #endregion
+
+        #region OnGroupExpand
+
+        private static readonly object _onGroupExpandHandlerKey = new object();
+
+        /// <summary>
+        /// 分组展开事件
+        /// </summary>
+        [Category(CategoryName.ACTION)]
+        [Description("分组展开事件")]
+        public event EventHandler<GridGroupEventArgs> GroupExpand
+        {
+            add
+            {
+                Events.AddHandler(_onGroupExpandHandlerKey, value);
+            }
+            remove
+            {
+                Events.RemoveHandler(_onGroupExpandHandlerKey, value);
+            }
+        }
+
+        /// <summary>
+        /// 触发分组展开事件
+        /// </summary>
+        /// <param name="e">事件参数</param>
+        protected virtual void OnGroupExpand(GridGroupEventArgs e)
+        {
+            EventHandler<GridGroupEventArgs> handler = Events[_onGroupExpandHandlerKey] as EventHandler<GridGroupEventArgs>;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        #endregion
+
+        #region OnGroupClick
+
+        private static readonly object _onGroupClickHandlerKey = new object();
+
+        /// <summary>
+        /// 分组点击事件
+        /// </summary>
+        [Category(CategoryName.ACTION)]
+        [Description("分组点击事件")]
+        public event EventHandler<GridGroupEventArgs> GroupClick
+        {
+            add
+            {
+                Events.AddHandler(_onGroupClickHandlerKey, value);
+            }
+            remove
+            {
+                Events.RemoveHandler(_onGroupClickHandlerKey, value);
+            }
+        }
+
+        /// <summary>
+        /// 触发分组点击事件
+        /// </summary>
+        /// <param name="e">事件参数</param>
+        protected virtual void OnGroupClick(GridGroupEventArgs e)
+        {
+            EventHandler<GridGroupEventArgs> handler = Events[_onGroupClickHandlerKey] as EventHandler<GridGroupEventArgs>;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        #endregion
+
+        #region OnGroupDoubleClick
+
+        private static readonly object _onGroupDoubleClickHandlerKey = new object();
+
+        /// <summary>
+        /// 分组双击事件
+        /// </summary>
+        [Category(CategoryName.ACTION)]
+        [Description("分组双击事件")]
+        public event EventHandler<GridGroupEventArgs> GroupDoubleClick
+        {
+            add
+            {
+                Events.AddHandler(_onGroupDoubleClickHandlerKey, value);
+            }
+            remove
+            {
+                Events.RemoveHandler(_onGroupDoubleClickHandlerKey, value);
+            }
+        }
+
+        /// <summary>
+        /// 分组双击事件
+        /// </summary>
+        /// <param name="e">事件参数</param>
+        protected virtual void OnGroupDoubleClick(GridGroupEventArgs e)
+        {
+            EventHandler<GridGroupEventArgs> handler = Events[_onGroupDoubleClickHandlerKey] as EventHandler<GridGroupEventArgs>;
             if (handler != null)
             {
                 handler(this, e);

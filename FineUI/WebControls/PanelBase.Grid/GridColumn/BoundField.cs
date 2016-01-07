@@ -187,6 +187,10 @@ namespace FineUI
                 {
                     text = NullDisplayText;
                 }
+                else if (DataType == GridColumnDataType.Boolean || DataType == GridColumnDataType.Number)
+                {
+                    return value;
+                }
                 else
                 {
                     if (!String.IsNullOrEmpty(DataFormatString))

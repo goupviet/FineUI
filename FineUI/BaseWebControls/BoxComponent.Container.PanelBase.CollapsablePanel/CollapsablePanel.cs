@@ -64,6 +64,25 @@ namespace FineUI
         /// </summary>
         [Category(CategoryName.OPTIONS)]
         [DefaultValue(false)]
+        [Description("是否启用动画效果")]
+        public bool AnimCollapse
+        {
+            get
+            {
+                object obj = FState["AnimCollapse"];
+                return obj == null ? false : (bool)obj;
+            }
+            set
+            {
+                FState["AnimCollapse"] = value;
+            }
+        }
+
+        /// <summary>
+        /// 是否启用折叠事件
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue(false)]
         [Description("是否启用折叠事件")]
         public bool EnableCollapseEvent
         {
@@ -345,7 +364,7 @@ namespace FineUI
 
             #region options
 
-            OB.AddProperty("animCollapse", false);
+            OB.AddProperty("animCollapse", AnimCollapse);
             OB.AddProperty("collapsible", EnableCollapse);
             OB.AddProperty("collapsed", Collapsed);
 

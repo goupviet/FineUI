@@ -180,6 +180,25 @@ namespace FineUI
         }
 
         /// <summary>
+        /// [AJAX属性]SVG图标
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue("")]
+        [Description("[AJAX属性]SVG图标")]
+        public string Glyph
+        {
+            get
+            {
+                object obj = FState["Glyph"];
+                return obj == null ? "" : obj.ToString();
+            }
+            set
+            {
+                FState["Glyph"] = value;
+            }
+        }
+
+        /// <summary>
         /// 按钮的大小
         /// </summary>
         [Category(CategoryName.OPTIONS)]
@@ -669,6 +688,11 @@ namespace FineUI
                 {
                     OB.AddProperty("iconAlign", IconAlignHelper.GetName(IconAlign));
                 }
+            }
+
+            if (!string.IsNullOrEmpty(Glyph) && !string.IsNullOrEmpty(FontAwesomeHelper.GetValue(Glyph)))
+            {
+                OB.AddProperty("glyph", FontAwesomeHelper.GetValue(Glyph));
             }
 
             #endregion
