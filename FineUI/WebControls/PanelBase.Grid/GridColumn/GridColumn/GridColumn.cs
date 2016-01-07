@@ -700,6 +700,30 @@ namespace FineUI
                     OB.AddProperty("hideable", false);
                 }
 
+                // mod by wz
+                //if (Grid.EnableSummary)
+                //{
+                //    if (this is RowNumberField)
+                //    {
+                //        // 序号列 没有合计
+                //    }
+                //    else
+                //    {
+                //        OB.AddProperty("summaryType", String.Format("F.util.summaryType('{0}')", Grid.ClientID), true);
+                //    }
+                //}
+
+                if (this is BoundField)
+                {
+                    if (DataType == GridColumnDataType.Default)
+                    {
+                        // do nothing
+                    }
+                    else
+                    {
+                        OB.AddProperty("xtype", GridColumnDataTypeHelper.GetName(DataType));
+                    }
+                }
 
                 if (Grid.EnableSummary)
                 {
@@ -709,16 +733,20 @@ namespace FineUI
                     }
                     else
                     {
-                        OB.AddProperty("summaryType", String.Format("F.util.summaryType('{0}')", Grid.ClientID), true);
+                        if (string.IsNullOrEmpty(SummaryType) && string.IsNullOrEmpty(SummaryRenderer))
+                        {
+                            OB.AddProperty("summaryType", String.Format("F.util.summaryType('{0}')", Grid.ClientID), true);
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(SummaryType))
+                                OB.AddProperty("summaryType", SummaryType);
+                            if (!string.IsNullOrEmpty(SummaryRenderer))
+                                OB.AddProperty("summaryRenderer", SummaryRenderer, true);
+                        }
                     }
                 }
-
-
-
-
-
-
-
+                
             }
         }
 
@@ -733,7 +761,77 @@ namespace FineUI
         protected void AddGridColumnScript(string jsContent)
         {
             AddStartupScript(jsContent);
-        } 
+        }
+
+        #endregion
+
+        #region mod by wz
+
+        #region Summary
+
+        /// <summary>
+        /// 合计类别
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue("")]
+        [Description("合计类别")]
+        public string SummaryType
+        {
+            get
+            {
+                return _summaryType;
+            }
+            set
+            {
+                _summaryType = value;
+            }
+        }
+
+        private string _summaryType = "";
+
+        /// <summary>
+        /// 合计显示
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue("")]
+        [Description("合计显示")]
+        public string SummaryRenderer
+        {
+            get
+            {
+                return _summaryRenderer;
+            }
+            set
+            {
+                _summaryRenderer = value;
+            }
+        }
+
+        private string _summaryRenderer = "";
+
+
+
+        private GridColumnDataType _dataType = GridColumnDataType.Default;
+
+        /// <summary>
+        /// 字段类型
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue("")]
+        [Description("字段类型")]
+        public GridColumnDataType DataType
+        {
+            get
+            {
+                return _dataType;
+            }
+            set
+            {
+                _dataType = value;
+            }
+        }
+
+        #endregion
 
         #endregion
 

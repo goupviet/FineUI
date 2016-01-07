@@ -13,7 +13,7 @@
 + ux中增加的Ext.ux.window.Notification插件
 + build.bat以及build_only_css.bat增加Notification.js/bat增加Notification.css的引用
 
-####Group&Summary
+####Group&Summary（注意此功能必须使用extjs 4.2.2）
 + Grid.cs增加的EnableGroup选项
 + Grid.cs增加的Group相关事件
 + 增加的GridGroupEventArgs事件类型

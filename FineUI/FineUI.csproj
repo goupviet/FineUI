@@ -217,9 +217,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Business\Editor\GridColumnsEditor.cs" />
+    <Compile Include="WebControls\PanelBase.Grid\EventArgs\GridGroupEventArgs.cs" />
     <Compile Include="WebControls\PanelBase.Grid\EventArgs\GridRowSelectEventArgs.cs" />
     <Compile Include="WebControls\PanelBase.Grid\EventArgs\GridAfterEditEventArgs.cs" />
     <Compile Include="WebControls\PanelBase.Grid\GridColumn\BaseField.cs" />
+    <Compile Include="WebControls\PanelBase.Grid\GridColumn\GridColumn\GridColumnDataType.cs" />
     <Compile Include="WebControls\PanelBase.Grid\GridColumn\RenderField\RenderField.cs" />
     <Compile Include="WebControls\PanelBase.Grid\GridColumn\RenderField\RenderCheckField.cs" />
     <Compile Include="WebControls\PanelBase.Grid\GridColumn\RenderField\RenderBaseField.cs" />
