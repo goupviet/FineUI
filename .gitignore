@@ -194,3 +194,8 @@ FakesAssemblies/
 
 # Visual Studio 6 workspace options file
 *.opt
+
+# extjs fuck
+extjs_source_all/
+FineUI.Empty/res/
+ext-theme-*/

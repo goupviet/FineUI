@@ -1,0 +1,7 @@
+
+.x-grid-row-summary .x-grid-cell,
+.x-grid-row-summary .x-grid-rowwrap,
+.x-grid-row-summary .x-grid-cell-rowbody {
+    background-image: none;
+    border-width: 0;
+}
