@@ -122,6 +122,86 @@ namespace FineUI
 
         #region Properties
 
+        /// <summary>
+        /// 最小高度
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue(typeof(Unit), "")]
+        [Description("最小高度")]
+        public Unit MinHeight
+        {
+            get
+            {
+                object obj = FState["MinHeight"];
+                return obj == null ? Unit.Empty : (Unit)obj;
+            }
+            set
+            {
+                FState["MinHeight"] = value;
+            }
+        }
+
+
+        /// <summary>
+        /// 最小宽度
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue(typeof(Unit), "")]
+        [Description("最小宽度")]
+        public Unit MinWidth
+        {
+            get
+            {
+                object obj = FState["MinWidth"];
+                return obj == null ? Unit.Empty : (Unit)obj;
+            }
+            set
+            {
+                FState["MinWidth"] = value;
+            }
+        }
+
+
+
+        /// <summary>
+        /// 最大高度
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue(typeof(Unit), "")]
+        [Description("最大高度")]
+        public Unit MaxHeight
+        {
+            get
+            {
+                object obj = FState["MaxHeight"];
+                return obj == null ? Unit.Empty : (Unit)obj;
+            }
+            set
+            {
+                FState["MaxHeight"] = value;
+            }
+        }
+
+
+        /// <summary>
+        /// 最大宽度
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue(typeof(Unit), "")]
+        [Description("最大宽度")]
+        public Unit MaxWidth
+        {
+            get
+            {
+                object obj = FState["MaxWidth"];
+                return obj == null ? Unit.Empty : (Unit)obj;
+            }
+            set
+            {
+                FState["MaxWidth"] = value;
+            }
+        }
+
 
         /// <summary>
         /// 启用自定义的圆角边框
@@ -776,7 +856,25 @@ namespace FineUI
 
             #endregion
 
-            #region Width/Height
+            #region MinHeight/MinHeight
+
+            if (MinHeight != Unit.Empty)
+            {
+                OB.AddProperty("minHeight", MinHeight.Value);
+            }
+            if (MinWidth != Unit.Empty)
+            {
+                OB.AddProperty("minWidth", MinWidth.Value);
+            }
+            if (MaxHeight != Unit.Empty)
+            {
+                OB.AddProperty("maxHeight", MaxHeight.Value);
+            }
+            if (MaxWidth != Unit.Empty)
+            {
+                OB.AddProperty("maxWidth", MaxWidth.Value);
+            }
+
 
             //// 对于Panel，如果宽度/高度没有定义
             //if (Width == Unit.Empty && AutoWidth)

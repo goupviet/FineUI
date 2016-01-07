@@ -430,7 +430,7 @@ namespace FineUI
         [Category(CategoryName.OPTIONS)]
         [DefaultValue(typeof(Unit), "100")]
         [Description("最小高度")]
-        public Unit MinHeight
+        public new Unit MinHeight
         {
             get
             {
@@ -450,7 +450,7 @@ namespace FineUI
         [Category(CategoryName.OPTIONS)]
         [DefaultValue(typeof(Unit), "200")]
         [Description("最小宽度")]
-        public Unit MinWidth
+        public new Unit MinWidth
         {
             get
             {
@@ -1493,7 +1493,7 @@ namespace FineUI
         /// <returns>客户端脚本</returns>
         public string GetIFrameCustomEventReference(string eventArgument, bool validateForms)
         {
-            return String.Format("F.wnd.getIFrameWindowObject({0}).F.customEvent({1}, {2});", ScriptID, JsHelper.Enquote(eventArgument), validateForms.ToString().ToLower());
+            return String.Format("F.wnd.getIFrameWindowObject({0}).F.f_customEvent({1}, {2});", ScriptID, JsHelper.Enquote(eventArgument), validateForms.ToString().ToLower());
         }
         #endregion
 

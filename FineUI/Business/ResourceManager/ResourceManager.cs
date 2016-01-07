@@ -61,8 +61,8 @@ namespace FineUI
 
         public static readonly string PAGE_STATE_CHANGED_ID = "F_CHANGED";
 
-        // 在FineUI-Utility.js中被使用，不要修改
-        public static readonly string DISABLED_CONTROL_BEFORE_POSTBACK = "F_TARGET";
+        //// 在FineUI-Utility.js中被使用，不要修改
+        //public static readonly string DISABLED_CONTROL_BEFORE_POSTBACK = "F_TARGET";
 
 
 

@@ -978,7 +978,7 @@ namespace FineUI
             if (currentModifiedProperties.Count > 0)
             {
                 // 更新当前控件的 F_STATE 状态
-                sb.AppendFormat("F.state({0},{1});", XID, ConvertPropertiesToJObject(currentModifiedProperties).ToString(Formatting.None));
+                sb.AppendFormat("F.f_state({0},{1});", XID, ConvertPropertiesToJObject(currentModifiedProperties).ToString(Formatting.None));
             }
 
             sb.Append(GetHiddenPropertyChangedScript());
@@ -1598,18 +1598,18 @@ namespace FineUI
 
             if (enableAjax != PageManager.Instance.EnableAjax)
             {
-                sb.AppendFormat("F.control_enable_ajax={0};", enableAjax ? "true" : "false");
+                sb.AppendFormat("F.controlEnableAjax={0};", enableAjax ? "true" : "false");
             }
 
 
             if (EnableAjaxLoading != PageManager.Instance.EnableAjaxLoading)
             {
-                sb.AppendFormat("F.control_enable_ajax_loading={0};", EnableAjaxLoading ? "true" : "false");
+                sb.AppendFormat("F.controlEnableAjaxLoading={0};", EnableAjaxLoading ? "true" : "false");
             }
 
             if (AjaxLoadingType != PageManager.Instance.AjaxLoadingType)
             {
-                sb.AppendFormat("F.control_ajax_loading_type='{0}';", AjaxLoadingTypeName.GetName(AjaxLoadingType));
+                sb.AppendFormat("F.controlAjaxLoadingType='{0}';", AjaxLoadingTypeName.GetName(AjaxLoadingType));
             }
 
             sb.Append(Page.ClientScript.GetPostBackEventReference(this, eventArgument));

@@ -69,6 +69,73 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="default.aspx" />
+    <Content Include="extjs_builder\js\F\extender.js" />
+    <Content Include="extjs_builder\js\F\F.ajax.js" />
+    <Content Include="extjs_builder\js\F\F.format.js" />
+    <Content Include="extjs_builder\js\F\F.simulateTree.js" />
+    <Content Include="extjs_builder\js\F\F.util.js" />
+    <Content Include="extjs_builder\js\F\F.wnd.js" />
+    <Content Include="extjs_builder\js\lang\f-lang-en.js" />
+    <Content Include="extjs_builder\js\lang\f-lang-pt_BR.js" />
+    <Content Include="extjs_builder\js\lang\f-lang-ru.js" />
+    <Content Include="extjs_builder\js\lang\f-lang-tr.js" />
+    <Content Include="extjs_builder\js\lang\f-lang-zh_CN.js" />
+    <Content Include="extjs_builder\js\lang\f-lang-zh_TW.js" />
+    <Content Include="extjs_builder\js\lib\Base64.js" />
+    <Content Include="extjs_builder\js\lib\json2.js" />
+    <Content Include="extjs_builder\js\ux\CheckColumn.js" />
+    <Content Include="extjs_builder\js\ux\FormViewport.js" />
+    <Content Include="extjs_builder\js\ux\Notification.js" />
+    <Content Include="extjs_builder\js\ux\SimplePagingToolbar.js" />
+    <Content Include="extjs_builder\js\ux\TabCloseMenu.js" />
+    <Content Include="extjs_builder\js\修改ext-all.js（为了支持 IE11）.txt" />
+    <Content Include="extjs_builder\res\access.css" />
+    <Content Include="extjs_builder\res\classic.css" />
+    <Content Include="extjs_builder\res\FineUI.css" />
+    <Content Include="extjs_builder\res\gray.css" />
+    <Content Include="extjs_builder\res\Grid.css" />
+    <Content Include="extjs_builder\res\images\accordion_hover.gif" />
+    <Content Include="extjs_builder\res\images\accordion_link_hover.gif" />
+    <Content Include="extjs_builder\res\images\accordion_link_hover2.gif" />
+    <Content Include="extjs_builder\res\images\accordion_reset.gif" />
+    <Content Include="extjs_builder\res\images\accordion_select.gif" />
+    <Content Include="extjs_builder\res\images\box.gif" />
+    <Content Include="extjs_builder\res\images\bullet_cross.png" />
+    <Content Include="extjs_builder\res\images\check-back1.gif" />
+    <Content Include="extjs_builder\res\images\check.gif" />
+    <Content Include="extjs_builder\res\images\checked.gif" />
+    <Content Include="extjs_builder\res\images\checked_disabled.gif" />
+    <Content Include="extjs_builder\res\images\check_notuse_back.gif" />
+    <Content Include="extjs_builder\res\images\check_notuse__1.gif" />
+    <Content Include="extjs_builder\res\images\delete.gif" />
+    <Content Include="extjs_builder\res\images\dialog-ok.gif" />
+    <Content Include="extjs_builder\res\images\dialog-ok.png" />
+    <Content Include="extjs_builder\res\images\elbow-empty.gif" />
+    <Content Include="extjs_builder\res\images\elbow-end.gif" />
+    <Content Include="extjs_builder\res\images\elbow-line.gif" />
+    <Content Include="extjs_builder\res\images\elbow.gif" />
+    <Content Include="extjs_builder\res\images\loading_24.gif" />
+    <Content Include="extjs_builder\res\images\loading_25.gif" />
+    <Content Include="extjs_builder\res\images\loading_32.gif" />
+    <Content Include="extjs_builder\res\images\loading_32_2.gif" />
+    <Content Include="extjs_builder\res\images\loading_42.gif" />
+    <Content Include="extjs_builder\res\images\loading_50.gif" />
+    <Content Include="extjs_builder\res\images\n-error.png" />
+    <Content Include="extjs_builder\res\images\n-information.png" />
+    <Content Include="extjs_builder\res\images\n-success.png" />
+    <Content Include="extjs_builder\res\images\n-warn.png" />
+    <Content Include="extjs_builder\res\images\pagemenu-separator.gif" />
+    <Content Include="extjs_builder\res\images\pagemenu_toolbar_background.gif" />
+    <Content Include="extjs_builder\res\images\s.gif" />
+    <Content Include="extjs_builder\res\images\tick.png" />
+    <Content Include="extjs_builder\res\images\uncheck.gif" />
+    <Content Include="extjs_builder\res\images\unchecked.gif" />
+    <Content Include="extjs_builder\res\images\unchecked_disabled.gif" />
+    <Content Include="extjs_builder\res\neptune.css" />
+    <Content Include="extjs_builder\res\Notification.css" />
+    <Content Include="extjs_builder\res\PageLoading.css" />
+    <Content Include="extjs_builder\res\Tree.css" />
+    <Content Include="extjs_builder\version.txt" />
     <Content Include="hello.aspx" />
     <Content Include="login.aspx" />
     <Content Include="Web.config">
@@ -114,6 +181,10 @@
       <Project>{0f8bf1f6-ddc2-43da-bb0b-416cc287ac1b}</Project>
       <Name>FineUI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="extjs_builder\build.bat" />
+    <Content Include="extjs_builder\build_only_js_css.bat" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

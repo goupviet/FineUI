@@ -154,8 +154,8 @@ namespace FineUI
             #endregion
             #region 页面上每个控件应该输出的脚本
 
-            // 设置提交表单的按钮等元素可用enable（有可能在后面的被覆盖）
-            sb.Append(GetEnableTargetControlScript());
+            //// 设置提交表单的按钮等元素可用enable（有可能在后面的被覆盖）
+            //sb.Append(GetEnableTargetControlScript());
 
             // 添加所有需要在AJAX时更新的脚本
             StringBuilder ajaxScriptBuilder = new StringBuilder();
@@ -168,6 +168,7 @@ namespace FineUI
                 ajaxScriptBuilder.Append(script);
             }
 
+            /*
             StringBuilder gridTplsBuilder = new StringBuilder();
             StringBuilder shortNameBuilder = new StringBuilder();
             Dictionary<string, string> shortNameDic = ResourceManager.Instance.AjaxShortNameList;
@@ -215,9 +216,41 @@ namespace FineUI
                     gridTplsBuilder.AppendFormat("F('{0}').f_updateTpls({1});", clientId, GetGridTpls(doc, clientId));
                 }
             }
+            */
 
+            // 2. 短名称
+            string shortNameScript = String.Empty;
+            List<string> shortNameList = new List<string>();
+            Dictionary<string, string> shortNameDic = ResourceManager.Instance.AjaxShortNameList;
+            if (shortNameDic.Count > 0)
+            {
+                foreach (string clientId in shortNameDic.Keys)
+                {
+                    string xid = shortNameDic[clientId];
+                    shortNameList.Add(String.Format("{0}=F('{1}')", xid, clientId));
+                }
+            }
+            if (shortNameList.Count > 0)
+            {
+                shortNameScript = String.Format("var {0};", String.Join(",", shortNameList.ToArray()));
+            }
+
+            // 3. 表格相关
+            StringBuilder gridTplsBuilder = new StringBuilder();
+
+            // 重新加载表格数据（也就是存在对f_loadData函数的调用）
+            if (PageManager.Instance.AjaxGridReloadedClientIDs.Count > 0)
+            {
+                foreach (string reloadGridClientID in PageManager.Instance.AjaxGridReloadedClientIDs)
+                {
+                    string xid = shortNameDic[reloadGridClientID];
+                    gridTplsBuilder.AppendFormat("{0}.f_tpls={1};", xid, GetGridTpls(doc, reloadGridClientID));
+                }
+            }
+
+            
             // 当前控件
-            sb.Append(shortNameBuilder.ToString() + gridTplsBuilder.ToString() + ajaxScriptBuilder.ToString());
+            sb.Append(shortNameScript + gridTplsBuilder.ToString() + ajaxScriptBuilder.ToString());
 
 
             //// 执行 onReady 脚本
@@ -284,19 +317,19 @@ namespace FineUI
         //}
 
 
-        /// <summary>
-        /// 设置引起本次回发的按钮（或其他控件）可用
-        /// </summary>
-        /// <returns></returns>
-        private static string GetEnableTargetControlScript()
-        {
-            string targetControlClientID = HttpContext.Current.Request.Form[ResourceManager.DISABLED_CONTROL_BEFORE_POSTBACK];
-            if (!String.IsNullOrEmpty(targetControlClientID))
-            {
-                return String.Format("F.enable('{0}');", targetControlClientID);
-            }
-            return String.Empty;
-        }
+        ///// <summary>
+        ///// 设置引起本次回发的按钮（或其他控件）可用
+        ///// </summary>
+        ///// <returns></returns>
+        //private static string GetEnableTargetControlScript()
+        //{
+        //    string targetControlClientID = HttpContext.Current.Request.Form[ResourceManager.DISABLED_CONTROL_BEFORE_POSTBACK];
+        //    if (!String.IsNullOrEmpty(targetControlClientID))
+        //    {
+        //        return String.Format("F.f_enable('{0}');", targetControlClientID);
+        //    }
+        //    return String.Empty;
+        //}
 
         #endregion
 
@@ -334,7 +367,7 @@ namespace FineUI
 
             if (!String.IsNullOrEmpty(newEventValidation) && (oldEventValidation != newEventValidation))
             {
-                sb.Append(String.Format("F.eventValidation('{0}');", newEventValidation));
+                sb.Append(String.Format("F.f_eventValidation('{0}');", newEventValidation));
             }
 
         }
@@ -390,7 +423,7 @@ namespace FineUI
                 // 如果只有很少的一些字符没改变（小于等于150个字符），还是返回完整的ViewState
                 if (changeIndex <= 150)
                 {
-                    sb.Append(String.Format("if(!F.viewState(__VIEWSTATE,'{0}'))return;", newViewState));
+                    sb.Append(String.Format("if(!F.f_viewState(__VIEWSTATE,'{0}'))return;", newViewState));
                 }
                 else
                 {
@@ -400,12 +433,12 @@ namespace FineUI
                         changedStr = newViewState.Substring(changeIndex);
                     }
 
-                    sb.Append(String.Format("if(!F.viewState(__VIEWSTATE,'{0}',{1}))return;", changedStr, changeIndex));
+                    sb.Append(String.Format("if(!F.f_viewState(__VIEWSTATE,'{0}',{1}))return;", changedStr, changeIndex));
                 }
             }
             else
             {
-                sb.Append("if(!F.viewState(__VIEWSTATE))return;");
+                sb.Append("if(!F.f_viewState(__VIEWSTATE))return;");
             }
         }
 

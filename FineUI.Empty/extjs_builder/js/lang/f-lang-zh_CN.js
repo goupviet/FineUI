@@ -1,7 +1,6 @@
 
 
 
-
 Ext.apply(F.ajax, {
     errorMsg: "出错了！{0} ({1})",
 	timeoutErrorMsg: "请求超时，请刷新页面并重试！"

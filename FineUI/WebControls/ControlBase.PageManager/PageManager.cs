@@ -361,31 +361,28 @@ namespace FineUI
         }
 
 
-        private List<string> _ajaxGridClientIDs = new List<string>();
-
-        /// <summary>
-        /// 本次AJAX请求过程中需要更新TemplateField的表格
-        /// </summary>
-        internal List<string> AjaxGridClientIDs
-        {
-            get
-            {
-                return _ajaxGridClientIDs;
-            }
-            set
-            {
-                _ajaxGridClientIDs = value;
-            }
-        }
-
-
-        internal void AddAjaxGridClientID(string clientID)
-        {
-            if (!_ajaxGridClientIDs.Contains(clientID))
-            {
-                _ajaxGridClientIDs.Add(clientID);
-            }
-        }
+        //private List<string> _ajaxGridClientIDs = new List<string>();
+        ///// <summary>
+        ///// 本次AJAX请求过程中需要更新TemplateField的表格
+        ///// </summary>
+        //internal List<string> AjaxGridClientIDs
+        //{
+        //    get
+        //    {
+        //        return _ajaxGridClientIDs;
+        //    }
+        //    set
+        //    {
+        //        _ajaxGridClientIDs = value;
+        //    }
+        //}
+        //internal void AddAjaxGridClientID(string clientID)
+        //{
+        //    if (!_ajaxGridClientIDs.Contains(clientID))
+        //    {
+        //        _ajaxGridClientIDs.Add(clientID);
+        //    }
+        //}
 
         private List<string> _ajaxGridReloadedClientIDs = new List<string>();
 
@@ -886,6 +883,37 @@ namespace FineUI
             }
         }
 
+        /// <summary>
+        /// 表单行子项之间的间距
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue(typeof(Unit), ConfigPropertyValue.FORMROW_ITEMSSPACE_DEFAULT_STRING)]
+        [Description("表单行子项之间的间距")]
+        public Unit FormRowItemsSpace
+        {
+            get
+            {
+                object obj = FState["FormRowItemsSpace"];
+                if (obj == null)
+                {
+                    if (DesignMode)
+                    {
+                        return (Unit)ConfigPropertyValue.FORMROW_ITEMSSPACE_DEFAULT;
+                    }
+                    else
+                    {
+                        return (Unit)GlobalConfig.GetFormRowItemsSpace();
+                    }
+                }
+                return (Unit)obj;
+            }
+            set
+            {
+                FState["FormRowItemsSpace"] = value;
+            }
+        }
+
+
 
         /// <summary>
         /// 表单中标签的位置
@@ -1220,7 +1248,7 @@ namespace FineUI
 
             }
 
-            string createScript = String.Format("F.pagemanager={1};", XID, job);
+            string createScript = String.Format("F.f_pagemanager={1};", XID, job);
             AddStartupScript(createScript);
         }
 
@@ -1339,7 +1367,7 @@ namespace FineUI
 
         #endregion
 
-        #region GetIFramePostBackEventReference
+        #region GetCustomEventReference
 
         /// <summary>
         /// 获取回发的客户端脚本（触发PageManager的CustomEvent事件）
@@ -1354,12 +1382,70 @@ namespace FineUI
         /// <summary>
         /// 获取回发的客户端脚本（触发PageManager的CustomEvent事件）
         /// </summary>
+        /// <param name="enableAjax">当前请求是否启用AJAX</param>
+        /// <param name="eventArgument">事件参数</param>
+        /// <returns>客户端脚本</returns>
+        public string GetCustomEventReference(bool enableAjax, string eventArgument)
+        {
+            return GetCustomEventReference(enableAjax, eventArgument, false);
+        }
+
+        /// <summary>
+        /// 获取回发的客户端脚本（触发PageManager的CustomEvent事件）
+        /// </summary>
         /// <param name="eventArgument">事件参数</param>
         /// <param name="validateForms">是否在回发前验证表单（在PageManager上进行表单配置）</param>
         /// <returns>客户端脚本</returns>
         public string GetCustomEventReference(string eventArgument, bool validateForms)
         {
-            return String.Format("F.customEvent({0}, {1});", JsHelper.Enquote(eventArgument), validateForms.ToString().ToLower());
+            return GetCustomEventReference(eventArgument, validateForms, false);
+        }
+
+        /// <summary>
+        /// 获取回发的客户端脚本（触发PageManager的CustomEvent事件）
+        /// </summary>
+        /// <param name="enableAjax">当前请求是否启用AJAX</param>
+        /// <param name="eventArgument">事件参数</param>
+        /// <param name="validateForms">是否在回发前验证表单（在PageManager上进行表单配置）</param>
+        /// <returns>客户端脚本</returns>
+        public string GetCustomEventReference(bool enableAjax, string eventArgument, bool validateForms)
+        {
+            return GetCustomEventReference(enableAjax, eventArgument, validateForms, false);
+        }
+
+        /// <summary>
+        /// 获取回发的客户端脚本（触发PageManager的CustomEvent事件）
+        /// </summary>
+        /// <param name="eventArgument">事件参数</param>
+        /// <param name="validateForms">是否在回发前验证表单（在PageManager上进行表单配置）</param>
+        /// <param name="persistOriginal">保持eventArgument参数原样输出</param>
+        /// <returns>客户端脚本</returns>
+        public string GetCustomEventReference(string eventArgument, bool validateForms, bool persistOriginal)
+        {
+            string arg = eventArgument;
+            if (!persistOriginal)
+            {
+                arg = JsHelper.Enquote(arg);
+            }
+            return String.Format("F.f_customEvent({0},{1});", arg, validateForms.ToString().ToLower());
+        }
+
+        /// <summary>
+        /// 获取回发的客户端脚本（触发PageManager的CustomEvent事件）
+        /// </summary>
+        /// <param name="enableAjax">当前请求是否启用AJAX</param>
+        /// <param name="eventArgument">事件参数</param>
+        /// <param name="validateForms">是否在回发前验证表单（在PageManager上进行表单配置）</param>
+        /// <param name="persistOriginal">保持eventArgument参数原样输出</param>
+        /// <returns>客户端脚本</returns>
+        public string GetCustomEventReference(bool enableAjax, string eventArgument, bool validateForms, bool persistOriginal)
+        {
+            string arg = eventArgument;
+            if (!persistOriginal)
+            {
+                arg = JsHelper.Enquote(arg);
+            }
+            return String.Format("F.f_customEvent({0},{1},{2});", enableAjax.ToString().ToLower(), arg, validateForms.ToString().ToLower());
         }
 
         #endregion

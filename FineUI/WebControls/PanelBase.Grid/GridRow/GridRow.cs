@@ -149,6 +149,23 @@ namespace FineUI
             }
         }
 
+        private string _rowID = String.Empty;
+
+        /// <summary>
+        /// 此行DataIDField字段的值
+        /// </summary>
+        public string RowID
+        {
+            get
+            {
+                return _rowID;
+            }
+            internal set
+            {
+                _rowID = value;
+            }
+        }
+
         private object[] _states = null;
 
         /// <summary>
@@ -187,22 +204,72 @@ namespace FineUI
         #region ToShortStates/FromShortStates
 
         /// <summary>
-        /// 当前行列状态列表
+        /// 是否定义了行列状态列表
         /// </summary>
         /// <returns></returns>
-        internal object[] ToShortStates()
+        internal bool HasStates()
         {
-            List<object> shortStates = new List<object>();
-            Collection<GridColumn> columns = _grid.AllColumns;
-            for (int i = 0, count = columns.Count; i < count; i++)
+            bool defined = false;
+
+            foreach (object state in _states)
             {
-                if (columns[i].PersistState)
+                if (state != null)
                 {
-                    shortStates.Add(States[i]);
+                    defined = true;
+                    break;
                 }
             }
-            return shortStates.ToArray();
+
+            return defined;
         }
+
+
+        /// <summary>
+        /// 恢复当前行列状态列表
+        /// </summary>
+        /// <param name="states"></param>
+        internal void RecoverStates(object[] states)
+        {
+            if (states == null || states.Length == 0)
+            {
+                Collection<GridColumn> columns = _grid.AllColumns;
+                _states = new object[columns.Count];
+            }
+            else
+            {
+                _states = states;
+
+                // 已经更新了当前行的States，下面从States恢复相应单元格的Value，比如CheckBoxField的GetColumnValue就是从States读取的值
+                int columnIndex = 0;
+                foreach (object state in _states)
+                {
+                    if (state != null)
+                    {
+                        UpdateValuesAt(columnIndex);
+                    }
+
+                    columnIndex++;
+                }
+            }
+        }
+
+        ///// <summary>
+        ///// 当前行列状态列表
+        ///// </summary>
+        ///// <returns></returns>
+        //internal object[] ToShortStates()
+        //{
+        //    List<object> shortStates = new List<object>();
+        //    Collection<GridColumn> columns = _grid.AllColumns;
+        //    for (int i = 0, count = columns.Count; i < count; i++)
+        //    {
+        //        if (columns[i].PersistState)
+        //        {
+        //            shortStates.Add(States[i]);
+        //        }
+        //    }
+        //    return shortStates.ToArray();
+        //}
 
         /// <summary>
         /// 恢复当前行列状态列表（同时更新相应的Values值）
@@ -210,6 +277,11 @@ namespace FineUI
         /// <param name="shortStates"></param>
         internal void FromShortStates(object[] shortStates)
         {
+            if (shortStates == null || shortStates.Length == 0)
+            {
+                return;
+            }
+
             Collection<GridColumn> columns = _grid.AllColumns;
             States = new object[columns.Count];
             int shortStateIndex = 0;
@@ -328,6 +400,24 @@ namespace FineUI
         /// </summary>
         internal void DataBindRow()
         {
+            // DataIDField
+            if (!String.IsNullOrEmpty(Grid.DataIDField))
+            {
+                RowID = GetPropertyValue(Grid.DataIDField).ToString();
+            }
+            else
+            {
+                // 如果表格未定义 DataIDField，则自动生成一个 RowId
+                //RowID = GridRowIDManager.Instance.GetNextGridRowID();
+
+                // 如果表格未定义 DataIDField，则自动生成一个 RowId
+                // 使用 rowIndex 来组装 RowId，在页面回发过程中相对比较稳定
+                RowID = String.Format("frow{0}", RowIndex);
+            }
+
+
+
+
             foreach (GridTemplateContainer tplCtrl in TemplateContainers)
             {
                 if (tplCtrl != null)

@@ -222,6 +222,32 @@ namespace FineUI
             }
         }
 
+        /// <summary>
+        /// 启用本列的单元格编辑功能（如果未定义Editor，则此属性为false）
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue(true)]
+        [Description("启用本列的单元格编辑功能（如果未定义Editor，则此属性为false）")]
+        public override bool EnableColumnEdit
+        {
+            get
+            {
+                if (Editor.Count > 0)
+                {
+                    object obj = FState["EnableColumnEdit"];
+                    return obj == null ? true : (bool)obj;
+                }
+                else
+                {
+                    // 如果未定义 Editor，则此属性为false
+                    return false;
+                }
+            }
+            set
+            {
+                FState["EnableColumnEdit"] = value;
+            }
+        }
 
         #endregion
 
@@ -252,6 +278,10 @@ namespace FineUI
                     else if (FieldType == FieldType.Float)
                     {
                         result = Convert.ToSingle(value);
+                    }
+                    else if (FieldType == FieldType.Double)
+                    {
+                        result = Convert.ToDouble(value);
                     }
                     else if (FieldType == FieldType.Date)
                     {
@@ -351,6 +381,9 @@ namespace FineUI
         protected override void OnFirstPreRender()
         {
             base.OnFirstPreRender();
+
+            OB.AddProperty("f_columnType", "renderfield");
+
 
             string renderer = GetRenderer();
             if (!String.IsNullOrEmpty(renderer))

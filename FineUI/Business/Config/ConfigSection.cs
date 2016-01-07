@@ -82,6 +82,23 @@ namespace FineUI
         }
 
         /// <summary>
+        /// 表单行子项之间的间距
+        /// </summary>
+        [ConfigurationProperty(ConfigPropertyName.FORMROWITEMSSPACE, DefaultValue = ConfigPropertyValue.FORMROW_ITEMSSPACE_DEFAULT)]
+        public int FormRowItemsSpace
+        {
+            get
+            {
+                return (int)base[ConfigPropertyName.FORMROWITEMSSPACE];
+            }
+            set
+            {
+                base[ConfigPropertyName.FORMROWITEMSSPACE] = value;
+            }
+        }
+
+
+        /// <summary>
         /// 表单中标签的位置
         /// </summary>
         [ConfigurationProperty(ConfigPropertyName.FORMLABELALIGN, DefaultValue = ConfigPropertyValue.FORM_LABELALIGN_DEFAULT_STRING)]

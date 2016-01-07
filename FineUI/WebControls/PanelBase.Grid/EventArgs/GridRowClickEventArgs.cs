@@ -45,16 +45,28 @@ namespace FineUI
         public int RowIndex
         {
             get { return _rowIndex; }
-            set { _rowIndex = value; }
         }
+
+        private string _rowID;
+
+        /// <summary>
+        /// 行ID
+        /// </summary>
+        public string RowID
+        {
+            get { return _rowID; }
+        }
+
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="rowIndex">行索引</param>
-        public GridRowClickEventArgs(int rowIndex)
+        /// <param name="rowID">行ID</param>
+        public GridRowClickEventArgs(int rowIndex, string rowID)
         {
             _rowIndex = rowIndex;
+            _rowID = rowID;
         }
 
     }

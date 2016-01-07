@@ -343,6 +343,26 @@ namespace FineUI
             }
         }
 
+
+        /// <summary>
+        /// 表单中标签的位置
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue(null)]
+        [Description("表单中标签的位置")]
+        public LabelAlign? LabelAlign
+        {
+            get
+            {
+                object obj = FState["LabelAlign"];
+                return obj == null ? null : (LabelAlign?)obj;
+            }
+            set
+            {
+                FState["LabelAlign"] = value;
+            }
+        }
+
         #endregion
 
         #region OnPreRender
@@ -357,7 +377,7 @@ namespace FineUI
             StringBuilder sb = new StringBuilder();
             if (PropertyModified("Readonly"))
             {
-                sb.AppendFormat("{0}.setReadOnly({1});", XID, Readonly.ToString().ToLower());
+                sb.AppendFormat("{0}.f_setReadOnly();", XID);
             }
 
             if (PropertyModified("Label"))
@@ -427,6 +447,11 @@ namespace FineUI
             if (LabelSeparator != ConfigPropertyValue.FORM_LABELSEPARATOR_DEFAULT)
             {
                 OB.AddProperty("labelSeparator", LabelSeparator);
+            }
+
+            if (LabelAlign != null)
+            {
+                OB.AddProperty("labelAlign", LabelAlignHelper.GetName(LabelAlign.Value));
             }
 
             if (LabelWidth != ConfigPropertyValue.FORM_LABELWIDTH_DEFAULT)

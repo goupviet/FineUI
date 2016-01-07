@@ -1,0 +1,10 @@
+在 ext-all.js 中找到如下代码:
+window.undefined=window.undefined;(function(){var q=function(e){return e.test(Ext.userAgent)},v=document.compatMode=="CSS1Compat",H=function(T,S){var e;return(T&&(e=S.exec(Ext.userAgent)))?parseFloat(e[1]):0},r=document.documentMode,a=q(/opera/),x=a&&q(/version\/10\.5/),M=q(/\bchrome\b/),B=q(/webkit/),c=!M&&q(/safari/),K=c&&q(/applewebkit\/4/),I=c&&q(/version\/3/),F=c&&q(/version\/4/),l=c&&q(/version\/5\.0/),E=c&&q(/version\/5/),k=!a&&q(/msie/),L=k&&((q(/msie 7/)&&r!=8&&r!=9&&r!=10)||r==7),J=k&&((q(/msie 8/)&&r!=7&&r!=9&&r!=10)||r==8),G=k&&((q(/msie 9/)&&r!=7&&r!=8&&r!=10)||r==9),h=k&&((q(/msie 10/)&&r!=7&&r!=8&&r!=9)||r==10),O=k&&q(/msie 6/),b=!B&&q(/gecko/),R=b&&q(/rv:1\.9/),Q=b&&q(/rv:2\.0/),P=b&&q(/rv:5\./),t=b&&q(/rv:10\./),A=R&&q(/rv:1\.9\.0/),y=R&&q(/rv:1\.9\.1/),w=R&&q(/rv:1\.9\.2/),g=q(/windows|win32/),D=q(/macintosh|mac os x/),z=q(/linux/),n=null,o=H(true,/\bchrome\/(\d+\.\d+)/),j=H(true,/\bfirefox\/(\d+\.\d+)/),p=H(k,/msie (\d+\.\d+)/),u=H(a,/version\/(\d+\.\d+)/),d=H(c,/version\/(\d+\.\d+)/),C=H(B,/webkit\/(\d+\.\d+)/),s=/^https/i.test(window.location.protocol),m;
+
+这段代码后面加上：
+
+Ext._isIE = !a && (q(/msie/) || q(/trident/)),
+Ext._isIE11 = k && ((q(/trident\/7\.0/) && r != 7 && r != 8 && r != 9 && r != 10) || r == 11);
+if (Ext._isIE11) {
+k = L = J = G = h = O = false;
+}

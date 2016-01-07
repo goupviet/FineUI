@@ -22,38 +22,19 @@ namespace FineUI
             string type = String.Empty;
             string typeValue = String.Empty;
             string extjsBasePath = GlobalConfig.GetJSBasePath();
-            //resName = "FineUI.";
 
 
             if (!String.IsNullOrEmpty(typeValue = context.Request.QueryString["icon"]))
             {
                 type = "icon";
             }
-            //else if (!String.IsNullOrEmpty(typeValue = context.Request.QueryString["js"]))
-            //{
-            //    type = "js";
-            //    //resName += "js." + typeValue;
-            //}
-            //else if (!String.IsNullOrEmpty(typeValue = context.Request.QueryString["lang"]))
-            //{
-            //    type = "lang";
-            //    //resName += "js.lang." + typeValue;
-            //}
             else if (!String.IsNullOrEmpty(typeValue = context.Request.QueryString["theme"]))
             {
-                // res.axd?theme=default.grid.refresh.gif
                 type = "theme";
-                //resName += "res.theme." + typeValue;
             }
-            //else if (!String.IsNullOrEmpty(typeValue = context.Request.QueryString["css"]))
-            //{
-            //    type = "css";
-            //    //resName += "res.css." + typeValue;
-            //}
             else if (!String.IsNullOrEmpty(typeValue = context.Request.QueryString["img"]))
             {
                 type = "img";
-                //resName += "res.img." + typeValue;
             }
             else
             {
@@ -61,7 +42,8 @@ namespace FineUI
                 return;
             }
 
-            //byte[] binary;
+            string filePath = String.Empty;
+            string fileBasePath = String.Empty;
             switch (type)
             {
                 case "icon":
@@ -69,23 +51,9 @@ namespace FineUI
                     {
                         typeValue = IconHelper.GetName((Icon)Enum.Parse(typeof(Icon), typeValue));
                     }
-                    //resName += "res.icon." + typeValue;
-                    string serverPath = String.Format("{0}/{1}", GlobalConfig.GetIconBasePath(), typeValue);
-                    context.Response.WriteFile(context.Server.MapPath(serverPath));
-
-                    context.Response.ContentType = "image/" + GetImageFormat(typeValue);
+                    fileBasePath = GlobalConfig.GetIconBasePath();
+                    filePath = String.Format("{0}/{1}", fileBasePath, typeValue);
                     break;
-                //case "js":
-                //    context.Response.Write(ResourceHelper.GetResourceContent(resName));
-                //    context.Response.ContentType = "text/javascript";
-                //case "lang":
-                //    context.Response.Write(ResourceHelper.GetResourceContent(resName));
-                //    context.Response.ContentType = "text/javascript";
-                //    break;
-                //case "css":
-                //    context.Response.Write(ResourceHelper.GetResourceContent(resName));
-                //    context.Response.ContentType = "text/css";
-                //    break;
                 case "theme":
                     string themePath = "";
                     string themeImageFormat = "";
@@ -96,22 +64,39 @@ namespace FineUI
                         themeImageFormat = typeValue.Substring(lastDotIndex + 1);
                     }
 
-                    context.Response.WriteFile(context.Server.MapPath(String.Format("{0}/res/images/{1}.{2}", extjsBasePath, themePath, themeImageFormat)));
-
-                    context.Response.ContentType = "image/" + GetImageFormat(typeValue);
+                    fileBasePath = String.Format("{0}/res/images", extjsBasePath);
+                    filePath = String.Format("{0}/{1}.{2}", fileBasePath, themePath, themeImageFormat);
                     break;
                 case "img":
-                    //binary = ResourceHelper.GetResourceContentAsBinary(resName);
-                    //context.Response.OutputStream.Write(binary, 0, binary.Length);
-                    //context.Response.ContentType = "image/" + GetImageFormat(resName);
-                    
-
-                    context.Response.WriteFile(context.Server.MapPath(String.Format("{0}/res/images/{1}", extjsBasePath, typeValue)));
-
-                    context.Response.ContentType = "image/" + GetImageFormat(typeValue);
+                    fileBasePath = String.Format("{0}/res/images", extjsBasePath);
+                    filePath = String.Format("{0}/{1}", fileBasePath, typeValue);
                     break;
             }
 
+            string imageType = GetImageFormat(typeValue);
+            string filePathServer = context.Server.MapPath(filePath);
+
+            // 非法图片后缀
+            if (!_allowedImageTypes.Contains(imageType))
+            {
+                return;
+            }
+
+            // 不是根目录下的文件
+            string rootPath = context.Server.MapPath(fileBasePath);
+            if (!filePathServer.StartsWith(rootPath))
+            {
+                return;
+            }
+
+            // 不存在此文件
+            if (!File.Exists(filePathServer))
+            {
+                return;
+            }
+
+            context.Response.WriteFile(filePathServer);
+            context.Response.ContentType = "image/" + imageType;
 
             // 缓存一年，只能通过改变 URL 来强制更新缓存
             context.Response.Cache.SetExpires(DateTime.Now.AddYears(1));
@@ -136,15 +121,21 @@ namespace FineUI
         //    }
         //}
 
-        private string GetImageFormat(string imageName)
+        private string GetImageFormat(string fileName)
         {
-            int lastDotIndex = imageName.LastIndexOf(".");
+            string imageFormat = String.Empty;
+
+            int lastDotIndex = fileName.LastIndexOf(".");
             if (lastDotIndex >= 0)
             {
-                return imageName.Substring(lastDotIndex + 1);
+                imageFormat = fileName.Substring(lastDotIndex + 1);
             }
-            return "png";
+            return imageFormat;
         }
+
+
+        private static readonly List<string> _allowedImageTypes = new List<string> { "bmp", "gif", "jpg", "jpeg", "png", "tiff", "icon" };
+
 
         private string GetImageFormat(ImageFormat format)
         {

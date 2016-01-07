@@ -5,12 +5,12 @@
  * Project：    FineUI
  * 
  * FileName:    MessageBox.cs
- * CreatedOn:   2014-09-20
- * CreatedBy:   bOAT
+ * CreatedOn:   2016-01-07
+ * CreatedBy:   wz
  * 
  * 
  * Description：
- *      -> 需要更新ext-part2.js文件
+ *      ->
  *   
  * History：
  * 
@@ -21,148 +21,362 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Drawing;
 
 namespace FineUI
 {
     /// <summary>
-    /// 确认对话框帮助类（静态类）
+    /// 自定义对话框帮助类（静态类）
     /// </summary>
-    public static class MessageBox
+    public class MessageBox
     {
+        #region public static
+
+        //public static string DefaultTitle = "自定义对话框";
+
         /// <summary>
-        /// 显示消息框
+        /// 自定义对话框默认图标
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="title"></param>
-        /// <param name="icon"></param>
-        /// <param name="buttons"></param>
-        /// <param name="target"></param>
-        /// <param name="okScript"></param>
-        /// <param name="cancelScript"></param>
-        /// <param name="yesScript"></param>
-        /// <param name="noScript"></param>
-        /// <param name="okText"></param>
-        /// <param name="cancelText"></param>
-        /// <param name="yesText"></param>
-        /// <param name="noText"></param>
-        public static void Show(string message, string title = null,
-            MessageBoxIcon icon = MessageBoxIcon.Information,
-            MessageBoxButtons buttons = MessageBoxButtons.OK,
-            Target target = Target.Top,
-            string okScript = null, string cancelScript = null, string yesScript = null, string noScript = null,
-            string okText = null, string cancelText = null, string yesText = null, string noText = null)
+        public static MessageBoxIcon DefaultMessageBoxIcon = MessageBoxIcon.Question;
+
+
+        ///// <summary>
+        ///// 自定义对话框默认图标
+        ///// </summary>
+        //public static MessageBoxIcon DefaultIcon = NotifyIcon.Question;
+
+
+        #endregion
+
+        #region class
+
+        private string _cssClass;
+
+        /// <summary>
+        /// 样式类名
+        /// </summary>
+        public string CssClass
         {
-            PageContext.RegisterStartupScript(GetShowReference(message, title, icon, buttons, target, okScript, cancelScript, yesScript, noScript, okText, cancelText, yesText, noText));
+            get { return _cssClass; }
+            set { _cssClass = value; }
         }
 
+
+        private string _message;
+
+        /// <summary>
+        /// 对话框消息正文
+        /// </summary>
+        public string Message
+        {
+            get { return _message; }
+            set { _message = value; }
+        }
+
+        private string _title;
+
+        /// <summary>
+        /// 对话框标题
+        /// </summary>
+        public string Title
+        {
+            get { return _title; }
+            set { _title = value; }
+        }
+
+        private MessageBoxIcon _messageBoxIcon = DefaultMessageBoxIcon;
+
+        /// <summary>
+        /// 对话框图标
+        /// </summary>
+        public MessageBoxIcon MessageBoxIcon
+        {
+            get { return _messageBoxIcon; }
+            set { _messageBoxIcon = value; }
+        }
+
+        private string _okScript;
+
+        /// <summary>
+        /// 点击确认按钮执行的JavaScript脚本
+        /// </summary>
+        public string OkScript
+        {
+            get { return _okScript; }
+            set { _okScript = value; }
+        }
+
+
+        private string _cancelScript;
+
+        /// <summary>
+        /// 点击取消按钮执行的JavaScript脚本
+        /// </summary>
+        public string CancelScript
+        {
+            get { return _cancelScript; }
+            set { _cancelScript = value; }
+        }
+
+        private string _yesScript;
+
+        /// <summary>
+        /// 点击是按钮执行的JavaScript脚本
+        /// </summary>
+        public string YesScript
+        {
+            get { return _yesScript; }
+            set { _yesScript = value; }
+        }
+
+        private string _noScript;
+
+        /// <summary>
+        /// 点击否按钮执行的JavaScript脚本
+        /// </summary>
+        public string NoScript
+        {
+            get { return _noScript; }
+            set { _noScript = value; }
+        }
+
+        private MessageBoxButtons _buttons;
+
+        /// <summary>
+        /// 按钮类别
+        /// </summary>
+        public MessageBoxButtons Buttons
+        {
+            get { return _buttons; }
+            set { _buttons = value; }
+        }
+
+        private string _okText;
+
+        /// <summary>
+        /// 点击确认按钮显示的文本
+        /// </summary>
+        public string OkText
+        {
+            get { return _okText; }
+            set { _okText = value; }
+        }
+
+
+        private string _cancelText;
+
+        /// <summary>
+        /// 点击取消按钮显示的文本
+        /// </summary>
+        public string CancelText
+        {
+            get { return _cancelText; }
+            set { _cancelText = value; }
+        }
+
+        private string _yesText;
+
+        /// <summary>
+        /// 点击是按钮显示的文本
+        /// </summary>
+        public string YesText
+        {
+            get { return _yesText; }
+            set { _yesText = value; }
+        }
+
+        private string _noText;
+
+        /// <summary>
+        /// 点击否按钮显示的文本
+        /// </summary>
+        public string NoText
+        {
+            get { return _noText; }
+            set { _noText = value; }
+        }
+
+        private Target _target;
+
+        /// <summary>
+        /// 对话框的目标位置
+        /// </summary>
+        public Target Target
+        {
+            get { return _target; }
+            set { _target = value; }
+        }
+
+        //private string _iconUrl;
+
+        ///// <summary>
+        ///// 自定义对话框图标地址
+        ///// </summary>
+        //public string IconUrl
+        //{
+        //    get { return _iconUrl; }
+        //    set { _iconUrl = value; }
+        //}
+
+        //private Icon _icon = Icon.None;
+
+        ///// <summary>
+        ///// 自定义对话框图标
+        ///// </summary>
+        //public Icon Icon
+        //{
+        //    get { return _icon; }
+        //    set { _icon = value; }
+        //}
+
+
+        /// <summary>
+        /// 显示对话框
+        /// </summary>
+        public void Show()
+        {
+            PageContext.RegisterStartupScript(this.GetShowReference());
+        }
 
         /// <summary>
         /// 获取显示对话框的客户端脚本
         /// </summary>
-        /// <param name="message"></param>
-        /// <param name="title"></param>
-        /// <param name="icon"></param>
-        /// <param name="buttons"></param>
-        /// <param name="target"></param>
-        /// <param name="okScript"></param>
-        /// <param name="cancelScript"></param>
-        /// <param name="yesScript"></param>
-        /// <param name="noScript"></param>
-        /// <param name="okText"></param>
-        /// <param name="cancelText"></param>
-        /// <param name="yesText"></param>
-        /// <param name="noText"></param>
-        /// <returns></returns>
-        public static string GetShowReference(string message, string title = null,
-            MessageBoxIcon icon = MessageBoxIcon.Information,
-            MessageBoxButtons buttons = MessageBoxButtons.OK,
-            Target target = Target.Top,
-            string okScript = null, string cancelScript = null, string yesScript = null, string noScript = null,
-            string okText = null, string cancelText = null, string yesText = null, string noText = null)
+        /// <returns>客户端脚本</returns>
+        public string GetShowReference()
         {
-            StringBuilder script = new StringBuilder();
-            script.Append("F.show(");
-
-            // target
-            script.Append(string.Format("'{0}'", TargetHelper.GetName(target)));
-            script.Append(",");
-
-            // title
-            if (!string.IsNullOrEmpty(title))
+            string message = "";
+            string title = "";
+            string buttonsShortName = "";
+            if (!String.IsNullOrEmpty(Message))
             {
-                script.Append(JsHelper.Enquote(title.Replace("\r\n", "\n").Replace("\n", "<br/>")));
-                script.Append(",");
+                message = Message;
             }
-            else
+            if (!String.IsNullOrEmpty(Title))
             {
-                script.Append("''");
-                script.Append(",");
+                title = Title;
             }
+            buttonsShortName = MessageBoxButtonsHelper.GetShortName(Buttons);
 
-            // message
-            script.Append(JsHelper.EnquoteWithScriptTag(message.Replace("\r\n", "\n").Replace("\n", "<br/>")));
-            script.Append(",");
+            JsObjectBuilder jsOB = new JsObjectBuilder();
 
-            // buttons
-            script.Append(string.Format("'{0}'", MessageBoxButtonsHelper.GetShortName(buttons)));
-            script.Append(",");
-
-            // scripts
-            script.Append(JsHelper.Enquote(okScript));
-            script.Append(",");
-
-            script.Append(JsHelper.Enquote(cancelScript));
-            script.Append(",");
-
-            script.Append(JsHelper.Enquote(yesScript));
-            script.Append(",");
-
-            script.Append(JsHelper.Enquote(noScript));
-            script.Append(",");
-
-            // icon
-            script.Append(string.Format("'{0}'", MessageBoxIconHelper.GetShortName(icon)));
-            script.Append(",");
-
-            // button text
-            if (!string.IsNullOrEmpty(okText))
+            if (!String.IsNullOrEmpty(NoText))
             {
-                script.Append(JsHelper.Enquote(okText));
-                script.Append(",");
+                jsOB.AddProperty("noText", NoText);
             }
-            else
-            {
-                script.Append("''");
-                script.Append(",");
-            }
-            if (!string.IsNullOrEmpty(cancelText))
-            {
-                script.Append(JsHelper.Enquote(cancelText));
-                script.Append(",");
-            }
-            else
-            {
-                script.Append("''");
-                script.Append(",");
-            }
-            if (!string.IsNullOrEmpty(yesText))
-            {
-                script.Append(JsHelper.Enquote(yesText));
-                script.Append(",");
-            }
-            else
-            {
-                script.Append("''");
-                script.Append(",");
-            }
-            // 最后一个对象没有逗号
-            script.Append(!string.IsNullOrEmpty(noText) ? JsHelper.Enquote(noText) : "''");
 
-            script.Append(");");
+            if (!String.IsNullOrEmpty(YesText))
+            {
+                jsOB.AddProperty("yesText", YesText);
+            }
 
-            return script.ToString();
+            if (!String.IsNullOrEmpty(CancelText))
+            {
+                jsOB.AddProperty("cancelText", CancelText);
+            }
+
+            if (!String.IsNullOrEmpty(OkText))
+            {
+                jsOB.AddProperty("okText", OkText);
+            }
+
+            if (!String.IsNullOrEmpty(buttonsShortName))
+            {
+                jsOB.AddProperty("buttonsShortName", buttonsShortName);
+            }
+
+            if (!String.IsNullOrEmpty(NoScript))
+            {
+                jsOB.AddProperty("noScript", NoScript);
+            }
+
+            if (!String.IsNullOrEmpty(YesScript))
+            {
+                jsOB.AddProperty("yesScript", YesScript);
+            }
+
+            if (!String.IsNullOrEmpty(CancelScript))
+            {
+                jsOB.AddProperty("cancelScript", CancelScript);
+            }
+
+            if (!String.IsNullOrEmpty(OkScript))
+            {
+                jsOB.AddProperty("okScript", OkScript);
+            }
+
+            if (Target != Target.Self)
+            {
+                jsOB.AddProperty("target", TargetHelper.GetName(Target));
+            }
+
+            if (MessageBoxIcon != MessageBoxIcon.Warning)
+            {
+                jsOB.AddProperty("messageIcon", MessageBoxIconHelper.GetShortName(MessageBoxIcon));
+            }
+
+            if (!String.IsNullOrEmpty(title))
+            {
+                jsOB.AddProperty("title", title.Replace("\r\n", "\n").Replace("\n", "<br/>"));
+            }
+
+            if (!String.IsNullOrEmpty(message))
+            {
+                jsOB.AddProperty("message", JsHelper.EnquoteWithScriptTag(message.Replace("\r\n", "\n").Replace("\n", "<br/>")), true);
+            }
+
+            return String.Format("F.show({0});", jsOB.ToString());
         }
+
+        #endregion
+
+
+        #region static Show
+
+        public static void Show(string message, string title = null, MessageBoxIcon icon = MessageBoxIcon.Question,
+            MessageBoxButtons buttons = MessageBoxButtons.OK,
+            string okScript = null, string cancelScript = null, string yesScript = null, string noScript = null,
+            string okText = null, string cancelText = null, string yesText = null, string noText = null,
+            Target target = Target.Top)
+        {
+            PageContext.RegisterStartupScript(GetShowReference(message, title, icon, buttons,
+                okScript, cancelScript, yesScript, noScript, okText, cancelText, yesText, noText, target));
+        }
+
+        #endregion
+
+        #region GetShowReference
+
+        public static string GetShowReference(string message, string title = null, MessageBoxIcon icon = MessageBoxIcon.Question,
+            MessageBoxButtons buttons = MessageBoxButtons.OK,
+            string okScript = null, string cancelScript = null, string yesScript = null, string noScript = null,
+            string okText = null, string cancelText = null, string yesText = null, string noText = null,
+            Target target = Target.Top)
+        {
+            MessageBox messageBox = new MessageBox();
+            messageBox.Message = message;
+            messageBox.Title = title;
+            messageBox.MessageBoxIcon = icon;
+            messageBox.Buttons = buttons;
+            messageBox.OkScript = okScript;
+            messageBox.CancelScript = cancelScript;
+            messageBox.YesScript = yesScript;
+            messageBox.NoScript = noScript;
+            messageBox.OkText = okText;
+            messageBox.CancelText = cancelText;
+            messageBox.YesText = yesText;
+            messageBox.NoText = noText;
+            messageBox.Target = target;
+
+            return messageBox.GetShowReference();
+        }
+
+        #endregion
     }
 
     /// <summary>
@@ -201,7 +415,6 @@ namespace FineUI
 
             return result;
         }
-
 
         public static string GetShortName(MessageBoxButtons type)
         {

@@ -26,6 +26,10 @@ namespace FineUI
         /// </summary>
         Float,
         /// <summary>
+        /// 双精度浮点数（精度为15~16）
+        /// </summary>
+        Double,
+        /// <summary>
         /// 布尔型
         /// </summary>
         Boolean,
@@ -60,6 +64,9 @@ namespace FineUI
                     break;
                 case FieldType.Boolean:
                     result = "boolean";
+                    break;
+                case FieldType.Double:
+                    result = "double";
                     break;
                 case FieldType.Date:
                     result = "date";

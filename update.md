@@ -3,13 +3,6 @@
 
 ##20150722
 
-####CollapsablePanel
-+ 增加AnimCollapse属性
-
-####FontAwesome
-+ 增加的FontAwesomeHelper类用于存储FontAwesome映射表
-+ Button.cs增加Glyph属性
-
 ####MessageBox
 + 根据Extjs增加的更强大的MessageBox类，取代Alert
 + F.util.js中增加的F.show方法
@@ -25,11 +18,6 @@
 + Grid.cs增加的Group相关事件
 + 增加的GridGroupEventArgs事件类型
 + GridColumn中增加的SummaryType和SummaryRenderer选项
-
-####Grid相关默认设置
-+ GridColumn默认文本居中
-+ Grid默认显示列分隔线
-+ Grid默认启用多选框
 
 ####GridColumn数据类型
 + GridColumn增加的DataType属性

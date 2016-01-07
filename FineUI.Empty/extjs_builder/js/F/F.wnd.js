@@ -66,11 +66,16 @@
         // isGoldenSection : 弹出窗体位于页面的黄金分隔位置
         // hiddenHiddenFieldID : 隐藏表单字段记录此窗体是否弹出，也页面回发时保持状态用
         show: function (panel, iframeUrl, windowTitle, left, top, isGoldenSection, hiddenHiddenFieldID, width, height) {
-            var target = F.util.getTargetWindow(panel['f_property_target']);
-            var guid = panel['f_property_guid'];
-            if (window.frameElement && target !== window) {
-                // 当前页面在IFrame中（也即时 window.frameElement 存在）
-                // 此弹出窗体需要在父窗口中弹出
+            var target = F.util.getTargetWindow(panel.f_property_target);
+            var guid = panel.f_property_guid;
+
+            // 当前页面在IFrame中（window.frameElement 存在） - 这个判断有问题
+            // ----如果外部页面是 http://a.com/ 而内部页面是 http://b.com/ 在 b.com 内弹出窗体时， window.frameElement 就会出现拒绝访问
+
+            // parent != window - 当前窗体不是顶层窗体
+            // target !== window - 并且当前窗体不是需要弹出的位置（target）
+            if (parent != window && target !== window) {
+                
                 if (!target.F[guid]) {
                     // 父窗口中已经创建了这个Ext-Window对象
                     var wrapper = guid + '_wrapper';
@@ -81,14 +86,19 @@
                     }
                     // Ext.apply 的第三个参数是default obejct
                     var config = Ext.apply({}, {
-                        'renderTo': wrapper,
-                        'id': guid,
-                        'f_property_window': window,
-                        'f_property_ext_window': panel
+                        renderTo: wrapper,
+                        id: guid,
+                        f_property_window: window,
+                        f_property_ext_window: panel
                     }, panel.initialConfig);
+                    delete config.f_state;
+                    delete config.items;
+                    delete config.listeners;
+
 
                     // 在父页面中创建一个Ext-Window的幻影（拷贝）
-                    target.F[guid] = target.Ext.create('Ext.window.Window', config);
+                    //target.F[guid] = target.Ext.create('Ext.window.Window', config);
+                    target.F.wnd.createGhostWindow(config);
                 }
                 panel = target.F[guid];
             }
@@ -127,10 +137,47 @@
                 panel.setPosition(leftTop.left, leftTop.top);
             }
 
+            /*
             if (panel.maximizable) {
                 F.wnd.fixMaximize(panel);
             }
+            */
+
+            F.wnd.fixMaximize(panel);
         },
+
+        createGhostWindow: function (config) {
+
+            var ghostWnd = Ext.create('Ext.window.Window', config);
+            ghostWnd.on('beforeclose', function () {
+
+                // 如果原始窗体所在的页面存在，则触发原始窗体的 beforeclose 事件
+                if (F.canAccess(config.f_property_window)) {
+                    config.f_property_ext_window.fireEvent('beforeclose', config.f_property_ext_window);
+
+                    return false;
+                }
+
+                // 如果原始窗体已经被关闭，则不拦截 beforeclose 事件，会简单的关闭窗体
+
+            });
+
+
+            ghostWnd.on('maximize', function () {
+
+                // 如果原始窗体所在的页面存在，则触发原始窗体的 maximize 事件
+                if (F.canAccess(config.f_property_window)) {
+                    config.f_property_ext_window.fireEvent('maximize', config.f_property_ext_window);
+                } else {
+                    F.wnd.fixMaximize(ghostWnd);
+                }
+
+            });
+            
+
+            F[config.id] = ghostWnd;
+        },
+
 
         // 获取Ghost Panel实例
         getGhostPanel: function (panel, targetName, guid) {
@@ -141,7 +188,7 @@
                 guid = panel.f_property_guid;   
             }
             var target = F.util.getTargetWindow(targetName);
-            if (window.frameElement && target !== window) {
+            if (parent != window && target !== window) {
                 // 从父页面中查找幻影Ext-Window对象
                 panel = target.F[guid];
             }
@@ -173,6 +220,8 @@
         maximize: function (panel) {
             var panel = F.wnd.getGhostPanel(panel);
             panel.maximize();
+
+            F.wnd.fixMaximize(panel);
         },
 
         // 最小化
@@ -191,7 +240,7 @@
         // 现在的 Window 控件时渲染在 from 表单里面的一个 DIV 中的
         fixMaximize: function (panel) {
             if (panel.maximized) {
-                var target = F.util.getTargetWindow(panel['f_property_target']);
+                var target = F.util.getTargetWindow(panel.f_property_target);
                 var bodySize = target.window.Ext.getBody().getViewSize();
                 panel.setSize(bodySize.width, bodySize.height);
                 // 不要忘记左上角坐标
@@ -273,12 +322,14 @@
         },
 
         // 返回当前活动Window组件对象（浏览器窗口对象通过F.wnd.getActiveWindow().window获取）
-        getActiveWindow: function () {
+        getActiveWindow: function (justParentWindow) {
 
             // Ext.WindowManager.getActive();有可能返回一个弹出对话框
             function getActiveFineUIWindow(wnd) {
                 var result = wnd.Ext.WindowManager.getActive();
-                if (!result.f_property_guid) {
+
+                // 如果弹出的窗体不是 FineUI.Window 生成的窗体（有可能是Alert、Notify），则需要从排序列表中找
+                if (result && !result.f_property_guid) {
                     wnd.Ext.WindowManager.eachTopDown(function (cmp) {
                         if (cmp.f_property_guid) {
                             result = cmp;
@@ -291,10 +342,11 @@
 
             var activeWindow = parent.window;
             var activeExtWindow = getActiveFineUIWindow(activeWindow);
+
             if (activeExtWindow) {
-                if (activeExtWindow['f_property_window']) {
-                    activeWindow = activeExtWindow['f_property_window'];
-                    activeExtWindow = activeExtWindow['f_property_ext_window'];
+                if (activeExtWindow.f_property_window && !justParentWindow) {
+                    activeWindow = activeExtWindow.f_property_window;
+                    activeExtWindow = activeExtWindow.f_property_ext_window;
                 }
                 activeExtWindow.window = activeWindow;
             }
@@ -305,13 +357,61 @@
         // 向弹出此Ext-Window的页面写入值
         writeBackValue: function () {
             var aw = F.wnd.getActiveWindow();
-            var controlIds = aw['f_property_save_state_control_client_ids'];
-            var controlCount = Math.min(controlIds.length, arguments.length);
-            for (var i = 0; i < controlCount; i++) {
-                aw.window.Ext.getCmp(controlIds[i]).setValue(arguments[i]);
+            if (F.canAccess(aw.window)) {
+                var controlIds = aw.f_property_save_state_control_client_ids;
+                var controlCount = Math.min(controlIds.length, arguments.length);
+                for (var i = 0; i < controlCount; i++) {
+                    aw.window.Ext.getCmp(controlIds[i]).setValue(arguments[i]);
+                }
             }
         }
 
     };
+
+
+
+    function hideActiveWindow(type, param) {
+        var aw = F.getActiveWindow();
+        if (aw) {
+            if (F.canAccess(aw.window)) {
+                if (type === 'hide') {
+                    aw.f_hide();
+                } else if (type === 'hiderefresh') {
+                    aw.f_hide_refresh();
+                } else if (type === 'hidepostback') {
+                    aw.f_hide_postback.call(aw, param)
+                } else if (type === 'hideexecutescript') {
+                    aw.f_hide_executescript.call(aw, param)
+                }
+            } else {
+                var parentAW = F.getActiveWindow(true);
+                parentAW.hide();
+            }
+        }
+    }
+
+    // 当前激活窗体
+    F.activeWnd = {
+
+        hide: function () {
+            hideActiveWindow('hide');
+        },
+
+        hideRefresh: function () {
+            hideActiveWindow('hiderefresh');
+        },
+
+        hidePostBack: function (param) {
+            hideActiveWindow('hidepostback', param);
+        },
+
+        hideExecuteScript: function (param) {
+            hideActiveWindow('hideexecutescript', param);
+        }
+
+
+    };
+
+
 
 })();

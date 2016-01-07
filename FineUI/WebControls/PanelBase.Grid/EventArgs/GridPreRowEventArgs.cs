@@ -56,7 +56,6 @@ namespace FineUI
         public object DataItem
         {
             get { return _dataItem; }
-            set { _dataItem = value; }
         }
 
 
@@ -68,8 +67,8 @@ namespace FineUI
         public int RowIndex
         {
             get { return _rowIndex; }
-            set { _rowIndex = value; }
         }
+
 
         /// <summary>
         /// ¹¹Ôìº¯Êý

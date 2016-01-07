@@ -598,7 +598,7 @@ namespace FineUI
                 nb.SetProperty("href", "javascript:;");
                 
                 // click
-                string paramStr = String.Format("Command${0}${1}${2}${3}", row.RowIndex, ColumnIndex, CommandName.Replace("'", "\""), CommandArgument.Replace("'", "\""));
+                string paramStr = String.Format("Command${0}${1}${2}${3}", row.RowID, ColumnID, CommandName.Replace("'", "\""), CommandArgument.Replace("'", "\""));
                 string postBackReference = Grid.GetPostBackEventReference(paramStr, EnableAjax);
 
                 string clientScript = Button.ResolveClientScript(ValidateForms, ValidateTarget, ValidateMessageBox, EnablePostBack, postBackReference,

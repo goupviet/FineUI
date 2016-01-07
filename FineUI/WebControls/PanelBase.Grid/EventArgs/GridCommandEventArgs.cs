@@ -45,8 +45,19 @@ namespace FineUI
         public int RowIndex
         {
             get { return _rowIndex; }
-            set { _rowIndex = value; }
         }
+
+        private string _rowID;
+
+        /// <summary>
+        /// 行ID
+        /// </summary>
+        public string RowID
+        {
+            get { return _rowID; }
+        }
+
+
 
         private int _columnIndex;
 
@@ -56,8 +67,20 @@ namespace FineUI
         public int ColumnIndex
         {
             get { return _columnIndex; }
-            set { _columnIndex = value; }
         }
+
+
+
+        private string _columnID;
+
+        /// <summary>
+        /// 列ID
+        /// </summary>
+        public string ColumnID
+        {
+            get { return _columnID; }
+        }
+
 
 
         private string _commandName;
@@ -68,7 +91,6 @@ namespace FineUI
         public string CommandName
         {
             get { return _commandName; }
-            set { _commandName = value; }
         }
 
 
@@ -80,7 +102,6 @@ namespace FineUI
         public string CommandArgument
         {
             get { return _commandArgument; }
-            set { _commandArgument = value; }
         }
 
 
@@ -88,13 +109,17 @@ namespace FineUI
         /// 构造函数
         /// </summary>
         /// <param name="rowIndex">行索引</param>
+        /// <param name="rowID">行ID</param>
         /// <param name="columnIndex">列索引</param>
+        /// <param name="columnID">列ID</param>
         /// <param name="commandName">命令名称</param>
         /// <param name="commandArgument">命令参数</param>
-        public GridCommandEventArgs(int rowIndex, int columnIndex, string commandName, string commandArgument)
+        public GridCommandEventArgs(int rowIndex, string rowID, int columnIndex, string columnID, string commandName, string commandArgument)
         {
             _rowIndex = rowIndex;
+            _rowID = rowID;
             _columnIndex = columnIndex;
+            _columnID = columnID;
             _commandName = commandName;
             _commandArgument = commandArgument;
         }

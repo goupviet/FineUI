@@ -69,9 +69,78 @@ namespace FineUI
             }
         }
 
+        /// <summary>
+        /// 启用本列的单元格编辑功能
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue(true)]
+        [Description("启用本列的单元格编辑功能")]
+        public virtual bool EnableColumnEdit
+        {
+            get
+            {
+                object obj = FState["EnableColumnEdit"];
+                return obj == null ? true : (bool)obj;
+            }
+            set
+            {
+                FState["EnableColumnEdit"] = value;
+            }
+        }
+
         #endregion
 
+        #region OnAjaxPreRender
 
+        /// <summary>
+        /// 渲染 HTML 之前调用（AJAX回发）
+        /// </summary>
+        protected override void OnAjaxPreRender()
+        {
+            // 调用 base.OnAjaxPreRender 方法，这样 Hidden 等属性改变就记录在 GridColumn 中，而无需 Grid 中的AJAX属性 HiddenColumns
+            base.OnAjaxPreRender();
+
+
+            //// 表格列控件监视部分列属性的改变
+            //StringBuilder sb = new StringBuilder();
+
+            //if (PropertyModified("EnableColumnEdit"))
+            //{
+            //    sb.AppendFormat("{0}.f_setEditable();", XID);
+            //}
+
+            //AddAjaxScript(sb);
+
+
+
+            //if (sb.Length > 0)
+            //{
+            //    // 输出表格的短名称，后面会调用 f_loadData
+            //    ResourceManager.Instance.AddAjaxShortName(Grid.ClientID, Grid.XID);
+
+            //    // 告诉 ResponseFilter，要调用 f_loadData，因为表格列属性改变了
+            //    PageManager.Instance.AddAjaxGridColumnChangedGridClientID(Grid.ClientID);
+            //}
+
+        }
+
+        #endregion
+
+        #region OnFirstPreRender
+
+        /// <summary>
+        /// 渲染 HTML 之前调用（页面第一次加载或者普通回发）
+        /// </summary>
+        protected override void OnFirstPreRender()
+        {
+            base.OnFirstPreRender();
+
+            OB.AddProperty("f_editable", EnableColumnEdit);
+            
+        }
+
+
+        #endregion
     }
 }
 

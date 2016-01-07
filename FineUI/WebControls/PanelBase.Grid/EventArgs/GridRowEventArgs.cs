@@ -37,53 +37,58 @@ namespace FineUI
     public class GridRowEventArgs : EventArgs
     {
 
-        private object[] _values;
+        private GridRow _row;
+
+        /// <summary>
+        /// 当前行
+        /// </summary>
+        public GridRow Row
+        {
+            get { return _row; }
+        }
 
         /// <summary>
         /// 本行各列的值（渲染后的HTML片段）
         /// </summary>
         public object[] Values
         {
-            get { return _values; }
-            set { _values = value; }
+            get { return _row.Values; }
         }
 
-
-        private object _dataItem;
 
         /// <summary>
         /// 行数据源
         /// </summary>
         public object DataItem
         {
-            get { return _dataItem; }
-            set { _dataItem = value; }
+            get { return _row.DataItem; }
         }
 
-
-        private int _rowIndex;
 
         /// <summary>
         /// 行索引
         /// </summary>
         public int RowIndex
         {
-            get { return _rowIndex; }
-            set { _rowIndex = value; }
+            get { return _row.RowIndex; }
+        }
+
+        /// <summary>
+        /// 行ID
+        /// </summary>
+        public string RowID
+        {
+            get { return _row.RowID; }
         }
 
 
         /// <summary>
         /// 构造函数
         /// </summary>
-        /// <param name="dataItem">行数据源</param>
-        /// <param name="rowIndex">行索引</param>
-        /// <param name="values">本行各列的值</param>
-        public GridRowEventArgs(object dataItem, int rowIndex, object[] values)
+        /// <param name="row">行</param>
+        public GridRowEventArgs(GridRow row)
         {
-            _dataItem = dataItem;
-            _values = values;
-            _rowIndex = rowIndex;
+            _row = row;
         }
 
     }

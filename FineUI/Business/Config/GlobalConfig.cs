@@ -149,6 +149,14 @@ namespace FineUI
         }
 
         /// <summary>
+        /// 表单行子项之间的间距
+        /// </summary>
+        public static int GetFormRowItemsSpace()
+        {
+            return section.FormRowItemsSpace;
+        }
+
+        /// <summary>
         /// 表单中标签的位置
         /// </summary>
         public static LabelAlign GetFormLabelAlign()

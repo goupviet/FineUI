@@ -85,18 +85,22 @@ namespace FineUI
         {
             base.OnFirstPreRender();
 
+            OB.AddProperty("f_columnType", "rendercheckfield");
+
+
             if (Grid.AllowCellEditing)
             {
                 OB.AddProperty("xtype", "checkcolumn");
 
                 if (Grid.EnableAfterEditEvent)
                 {
-                    string validateScript = "var args='AfterEdit$'+rowIndex+'$" + ColumnID + "';";
+                    string rowIdScript = String.Format("var rowId=F('{0}').getStore().getAt(rowIndex).getId();", Grid.ClientID);
+                    string validateScript = "var args='AfterEdit$'+rowId+'$" + ColumnID + "';";
                     validateScript += Grid.GetPostBackEventReference("#AfterEdit#").Replace("'#AfterEdit#'", "args");
 
                     //string checkchangeScript = String.Format("function(checkcolumn,rowIndex,checked){{{0}}}", validateScript);
                     //OB.Listeners.AddProperty("checkchange", checkchangeScript, true);
-                    AddListener("checkchange", validateScript, "checkcolumn", "rowIndex", "checked");
+                    AddListener("checkchange", rowIdScript + validateScript, "checkcolumn", "rowIndex", "checked");
                 }
             }
 

@@ -31,6 +31,7 @@ type res\images\s.gif > ..\extjs\res\s.gif
 type res\FineUI.css > _f
 type res\PageLoading.css >> _f
 type res\Grid.css >> _f
+type res\Notification.css >> _f
 type res\Tree.css >> _f
 ajaxminifier\ajaxminifier -css _f -o ..\extjs\res\css\ux.css
 
@@ -111,9 +112,9 @@ type js\F\extender.js >> _f
 type js\F\F.simulateTree.js >> _f
 type js\F\F.format.js >> _f
 type js\ux\FormViewport.js >> _f
+type js\ux\Notification.js >> _f
 type js\ux\SimplePagingToolbar.js >> _f
 type js\ux\TabCloseMenu.js >> _f
-type js\ux\Notification.js >> _f
 type extjs_source_all\examples\ux\RowExpander.js >> _f
 
 type _f > ..\extjs\ext-part2.js

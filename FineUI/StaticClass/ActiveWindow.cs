@@ -101,7 +101,8 @@ namespace FineUI
         /// <returns>客户端脚本</returns>
         public static string GetHideReference()
         {
-            return "(function(){var aw=F.wnd.getActiveWindow();if(aw){aw.f_hide();}})();";
+            //return "(function(){var aw=F.wnd.getActiveWindow();if(aw){aw.f_hide();}})();";
+            return "F.activeWnd.hide();";
         }
 
         /// <summary>
@@ -112,7 +113,8 @@ namespace FineUI
         {
             //return ACTIVE_WINDOW_SCRIPT + "if(aw){eval('aw[1].X.'+aw[0].id+'_hide_refresh();');}";
             //return ACTIVE_WINDOW_SCRIPT + "if(aw){aw[0].box_hide_refresh();}";
-            return "(function(){var aw=F.wnd.getActiveWindow();if(aw){aw.f_hide_refresh();}})();";
+            //return "(function(){var aw=F.wnd.getActiveWindow();if(aw){aw.f_hide_refresh();}})();";
+            return "F.activeWnd.hideRefresh();";
         }
 
         /// <summary>
@@ -123,7 +125,8 @@ namespace FineUI
         {
             //return ACTIVE_WINDOW_SCRIPT + "if(aw){eval('aw[1].X.'+aw[0].id+'_hide_postback();');}";
             //return ACTIVE_WINDOW_SCRIPT + "if(aw){aw[0].box_hide_postback();}";
-            return "(function(){var aw=F.wnd.getActiveWindow();if(aw){aw.f_hide_postback();}})();";
+            //return "(function(){var aw=F.wnd.getActiveWindow();if(aw){aw.f_hide_postback();}})();";
+            return "F.activeWnd.hidePostBack();";
         }
 
         /// <summary>
@@ -137,7 +140,8 @@ namespace FineUI
             //return ACTIVE_WINDOW_SCRIPT + "if(aw){aw[0].box_hide_postback('" + argument + "');}";
 
             //return "(function(){var aw=F.wnd.getActiveWindow(); if(aw){ aw[0].box_hide_postback('" + argument + "'); }})();";
-            return "(function(){var aw=F.wnd.getActiveWindow();if(aw){aw.f_hide_postback(" + JsHelper.Enquote(argument) + ");}})();";
+            //return "(function(){var aw=F.wnd.getActiveWindow();if(aw){aw.f_hide_postback(" + JsHelper.Enquote(argument) + ");}})();";
+            return "F.activeWnd.hidePostBack(" + JsHelper.Enquote(argument) + ");";
         }
 
 
@@ -148,7 +152,8 @@ namespace FineUI
         /// <returns>客户端脚本</returns>
         public static string GetHideExecuteScriptReference(string argument)
         {
-            return "(function(){var aw=F.wnd.getActiveWindow();if(aw){aw.f_hide_executescript(" + JsHelper.Enquote(argument) + ");}})();";
+            //return "(function(){var aw=F.wnd.getActiveWindow();if(aw){aw.f_hide_executescript(" + JsHelper.Enquote(argument) + ");}})();";
+            return "F.activeWnd.hideExecuteScript(" + JsHelper.Enquote(argument) + ");";
         }
 
 

@@ -49,6 +49,18 @@ namespace FineUI
 
         #region class
 
+        private string _cssClass;
+
+        /// <summary>
+        /// 样式类名
+        /// </summary>
+        public string CssClass
+        {
+            get { return _cssClass; }
+            set { _cssClass = value; }
+        }
+
+
         private string _message;
 
         /// <summary>
@@ -132,7 +144,8 @@ namespace FineUI
         /// </summary>
         public void Show()
         {
-            Show(Message, Title, MessageBoxIcon, OkScript, Target, Icon, IconUrl);
+            //Show(Message, Title, MessageBoxIcon, OkScript, Target, Icon, IconUrl);
+            PageContext.RegisterStartupScript(this.GetShowReference());
         }
 
         /// <summary>
@@ -141,7 +154,94 @@ namespace FineUI
         /// <returns>客户端脚本</returns>
         public string GetShowReference()
         {
-            return GetShowReference(Message, Title, MessageBoxIcon, OkScript, Target, Icon, IconUrl);
+            //return GetShowReference(Message, Title, MessageBoxIcon, OkScript, Target, Icon, IconUrl);
+
+            //if (message == null)
+            //{
+            //    message = String.Empty;
+            //}
+            //if (title == null)
+            //{
+            //    title = String.Empty;
+            //}
+
+            string message = "";
+            string title = "";
+            if (!String.IsNullOrEmpty(Message))
+            {
+                message = Message;
+            }
+            if (!String.IsNullOrEmpty(Title))
+            {
+                title = Title;
+            }
+
+
+            string addCSSScript = String.Empty;
+            string iconScriptFragment = String.Empty;
+            string resolvedIconUrl = IconHelper.GetResolvedIconUrl(Icon, IconUrl);
+
+            Page page = HttpContext.Current.CurrentHandler as Page;
+            if (page != null)
+            {
+                resolvedIconUrl = page.ResolveUrl(resolvedIconUrl);
+            }
+
+            Target target = Target;
+            // Icon 或者 IconUrl 不为空
+            if (!String.IsNullOrEmpty(resolvedIconUrl))
+            {
+                string className = String.Format("f-{0}-alert-icon", System.Guid.NewGuid().ToString("N"));
+
+                var addCSSPrefix = String.Empty;
+                if (target == Target.Parent)
+                {
+                    addCSSPrefix = "parent.";
+                }
+                else if (target == Target.Top)
+                {
+                    addCSSPrefix = "top.";
+                }
+                addCSSScript = String.Format("{0}F.addCSS('{1}','{2}');", addCSSPrefix, className, StyleUtil.GetNoRepeatBackgroundStyle("." + className, resolvedIconUrl));
+
+                iconScriptFragment = String.Format("'{0}'", className);
+            }
+            else
+            {
+                iconScriptFragment = MessageBoxIconHelper.GetName(MessageBoxIcon);
+            }
+
+            message = message.Replace("\r\n", "\n").Replace("\n", "<br/>");
+            title = title.Replace("\r\n", "\n").Replace("\n", "<br/>");
+            string targetScript = "window";
+            if (target != Target.Self)
+            {
+                targetScript = TargetHelper.GetScriptName(target);
+            }
+
+            JsObjectBuilder jsob = new JsObjectBuilder();
+            if (!String.IsNullOrEmpty(CssClass))
+            {
+                jsob.AddProperty("cls", CssClass);
+            }
+            if (!String.IsNullOrEmpty(title))
+            {
+                jsob.AddProperty("title", title);
+            }
+            if (!String.IsNullOrEmpty(OkScript))
+            {
+                jsob.AddProperty("ok", JsHelper.GetFunction(OkScript), true);
+            }
+            if (!String.IsNullOrEmpty(message))
+            {
+                jsob.AddProperty("message", JsHelper.EnquoteWithScriptTag(message), true);
+            }
+            if (!String.IsNullOrEmpty(iconScriptFragment))
+            {
+                jsob.AddProperty("messageIcon", iconScriptFragment, true);
+            }
+
+            return addCSSScript + String.Format("{0}.F.alert({1});", targetScript, jsob);
         }
 
         #endregion
@@ -473,72 +573,34 @@ namespace FineUI
         /// <returns>客户端脚本</returns>
         public static string GetShowReference(string message, string title, MessageBoxIcon messageBoxIcon, string okScript, Target target, Icon icon, string iconUrl)
         {
-            if (message == null)
-            {
-                message = String.Empty;
-            }
-            if (title == null)
-            {
-                title = String.Empty;
-            }
+            Alert alert = new Alert();
+            alert.Message = message;
+            alert.Title = title;
+            alert.MessageBoxIcon = messageBoxIcon;
+            alert.OkScript = okScript;
+            alert.Target = target;
+            alert.Icon = icon;
+            alert.IconUrl = iconUrl;
+            return alert.GetShowReference();    
 
-            string addCSSScript = String.Empty;
-            string iconScriptFragment = String.Empty;
-            string resolvedIconUrl = IconHelper.GetResolvedIconUrl(icon, iconUrl);
-
-            Page page = HttpContext.Current.CurrentHandler as Page;
-            if (page != null)
-            {
-                resolvedIconUrl = page.ResolveUrl(resolvedIconUrl);
-            }
-
-            // Icon 或者 IconUrl 不为空
-            if (!String.IsNullOrEmpty(resolvedIconUrl))
-            {
-                string className = String.Format("f-{0}-alert-icon", System.Guid.NewGuid().ToString("N"));
-
-                var addCSSPrefix = String.Empty;
-                if (target == Target.Parent)
-                {
-                    addCSSPrefix = "parent.";
-                }
-                else if (target == Target.Top)
-                {
-                    addCSSPrefix = "top.";
-                }
-                addCSSScript = String.Format("{0}F.addCSS('{1}','{2}');", addCSSPrefix, className, StyleUtil.GetNoRepeatBackgroundStyle("." + className, resolvedIconUrl));
-
-                iconScriptFragment = String.Format("'{0}'", className);
-            }
-            else
-            {
-                iconScriptFragment = MessageBoxIconHelper.GetName(messageBoxIcon);
-            }
-
-            message = message.Replace("\r\n", "\n").Replace("\n", "<br/>");
-            title = title.Replace("\r\n", "\n").Replace("\n", "<br/>");
-            string targetScript = "window";
-            if (target != Target.Self)
-            {
-                targetScript = TargetHelper.GetScriptName(target);
-            }
-
-            if (String.IsNullOrEmpty(title) &&
-                messageBoxIcon == DefaultMessageBoxIcon &&
-                String.IsNullOrEmpty(okScript) &&
-                String.IsNullOrEmpty(resolvedIconUrl))
-            {
-                return addCSSScript + String.Format("{0}.F.alert({1});", targetScript, JsHelper.Enquote(message));
-            }
-            else
-            {
-                return addCSSScript + String.Format("{0}.F.alert({1},{2},{3},{4});",
-                    targetScript,
-                    JsHelper.EnquoteWithScriptTag(message),
-                    JsHelper.Enquote(title),
-                    iconScriptFragment,
-                    String.IsNullOrEmpty(okScript) ? "''" : JsHelper.GetFunction(okScript));
-            }
+            
+            //if (String.IsNullOrEmpty(title) &&
+            //    messageBoxIcon == DefaultMessageBoxIcon &&
+            //    String.IsNullOrEmpty(okScript) &&
+            //    String.IsNullOrEmpty(resolvedIconUrl))
+            //{
+            //    return addCSSScript + String.Format("{0}.F.alert({1});", targetScript, JsHelper.Enquote(message));
+            //}
+            //else
+            //{
+            //    return addCSSScript + String.Format("{0}.F.alert({1},{2},{3},{4});",
+            //        targetScript,
+            //        JsHelper.EnquoteWithScriptTag(message),
+            //        JsHelper.Enquote(title),
+            //        iconScriptFragment,
+            //        String.IsNullOrEmpty(okScript) ? "''" : JsHelper.GetFunction(okScript));
+            //}
+            
         }
         #endregion
 

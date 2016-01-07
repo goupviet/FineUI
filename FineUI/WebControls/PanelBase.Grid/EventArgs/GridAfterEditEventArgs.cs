@@ -45,7 +45,17 @@ namespace FineUI
         public int RowIndex
         {
             get { return _rowIndex; }
-            set { _rowIndex = value; }
+        }
+
+
+        private int _columnIndex;
+
+        /// <summary>
+        /// 列索引
+        /// </summary>
+        public int ColumnIndex
+        {
+            get { return _columnIndex; }
         }
 
         private string _columnID;
@@ -56,18 +66,33 @@ namespace FineUI
         public string ColumnID
         {
             get { return _columnID; }
-            set { _columnID = value; }
+        }
+
+        private string _rowID;
+
+        /// <summary>
+        /// 行ID
+        /// </summary>
+        public string RowID
+        {
+            get { return _rowID; }
         }
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="rowIndex">行索引</param>
-        /// /// <param name="columnID">列ID</param>
-        public GridAfterEditEventArgs(int rowIndex, string columnID)
+        /// <param name="rowID">行ID</param>
+        /// <param name="columnIndex">列索引</param>
+        /// <param name="columnID">列ID</param>
+        public GridAfterEditEventArgs(int rowIndex, string rowID, int columnIndex, string columnID)
         {
             _rowIndex = rowIndex;
+            _rowID = rowID;
+
+            _columnIndex = columnIndex;
             _columnID = columnID;
+
         }
 
     }

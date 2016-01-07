@@ -7,12 +7,19 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>FineUI（开源版）空项目</title>
     <style>
-        .header .title a {
+        .header .title a,
+        .header .pro a {
             font-weight: bold;
             font-size: 24px;
             text-decoration: none;
             line-height: 50px;
             margin-left: 10px;
+        }
+
+        .header .pro {
+            position: absolute;
+            top: 0;
+            right: 10px;
         }
 
         .bottomtable {
@@ -51,6 +58,9 @@
                             runat="server">
                             <div class="title">
                                 <a href="./default.aspx" style="color: #fff;">FineUI（开源版）空项目</a>
+                            </div>
+                            <div class="pro">
+                                <a href="http://fineui.com/demo_pro/" target="_blank" style="color: #fff;">专业版示例</a>
                             </div>
                         </f:ContentPanel>
                     </Items>
@@ -94,7 +104,7 @@
                                             
                                             <br />
                                             <h2>相关链接</h2>
-                                            首页：<a target="_blank" style="font-weight: bold;" href="http://fineui.com/">http://fineui.com/</a>
+                                            首页：<a target="_blank" href="http://fineui.com/">http://fineui.com/</a>
                                             <br />
                                             论坛：<a target="_blank" href="http://fineui.com/bbs/">http://fineui.com/bbs/</a>
                                             <br />
@@ -104,7 +114,12 @@
                                             <br />
                                             <br />
                                             <br />
-                                            <h2><a target="_blank" href="http://fineui.com/pro/">FineUI（专业版）：基于 jQuery 的专业 ASP.NET 控件库</a></h2>
+                                            <br />
+
+                                            <hr />
+                                            <br />
+                                            <a target="_blank" href="http://fineui.com/pro/">企业用户推荐使用FineUI（专业版） - 更快、更强、更实惠！</a>
+                                           
                                         </f:ContentPanel>
                                     </Items>
                                 </f:Tab>
@@ -119,7 +134,7 @@
                                 <tr>
                                     <td style="width: 300px;">&nbsp;版本：<a target="_blank" href="http://fineui.com/version">v<asp:Literal runat="server" ID="litVersion"></asp:Literal></a>
                                         &nbsp;&nbsp; <a target="_blank" href="http://wp.qq.com/wpa/qunwpa?idkey=5a98eb42b742a1edaf22826648d5f61bc16ed08e0253976bc8d30f97508c09c7">QQ公开群</a></td>
-                                    <td style="text-align: center;">Copyright &copy; 2014 合肥三生石上软件有限公司</td>
+                                    <td style="text-align: center;">Copyright &copy; 2008-2015 合肥三生石上软件有限公司</td>
                                     <td style="width: 300px; text-align: right;">&nbsp;</td>
                                 </tr>
                             </table>

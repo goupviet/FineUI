@@ -1,6 +1,9 @@
 ﻿
 (function () {
 
+    // 正在进行中的AJAX请求个数
+    var __ajaxUnderwayCount = 0;
+
     F.ajax = {
 
         timeoutErrorMsg: "Request timeout, please refresh the page and try again!",
@@ -16,24 +19,24 @@
     };
 
     function enableAjax() {
-        if (typeof (F.control_enable_ajax) === 'undefined') {
-            return F.global_enable_ajax;
+        if (typeof (F.controlEnableAjax) === 'undefined') {
+            return F.enableAjax;
         }
-        return F.control_enable_ajax;
+        return F.controlEnableAjax;
     }
 
     function enableAjaxLoading() {
-        if (typeof (F.control_enable_ajax_loading) === 'undefined') {
-            return F.global_enable_ajax_loading;
+        if (typeof (F.controlEnableAjaxLoading) === 'undefined') {
+            return F.enableAjaxLoading;
         }
-        return F.control_enable_ajax_loading;
+        return F.controlEnableAjaxLoading;
     }
 
     function ajaxLoadingType() {
-        if (typeof (F.control_ajax_loading_type) === 'undefined') {
-            return F.global_ajax_loading_type;
+        if (typeof (F.controlAjaxLoadingType) === 'undefined') {
+            return F.ajaxLoadingType;
         }
-        return F.control_ajax_loading_type;
+        return F.controlAjaxLoadingType;
     }
 
 
@@ -41,28 +44,12 @@
         //if (typeof (F.util.beforeAjaxPostBackScript) === 'function') {
         //    F.util.beforeAjaxPostBackScript();
         //}
-        F.util.triggerBeforeAjax();
+		
+		// 如果显式返回false，则阻止AJAX回发
+        if(F.util.triggerBeforeAjax() === false) {
+			return;
+		}
 
-
-        function ajaxSuccess(data, viewStateBeforeAJAX) {
-            /*
-			try {
-				new Function(data)();
-			} catch (e) {
-				createErrorWindow({
-					statusText: "Execute JavaScript Exception",
-					status: -1,
-					responseText: util.htmlEncode(data)
-				});
-			}
-			*/
-            new Function('__VIEWSTATE', data)(viewStateBeforeAJAX);
-
-            // 有可能响应返回后即关闭本窗体
-            if (F && F.util) {
-                F.util.triggerAjaxReady();
-            }
-        }
 
         // Ext.encode will convert Chinese characters. Ext.encode({a:"你好"}) => '{"a":"\u4f60\u597d"}'
         // We will include the official JSON object from http://json.org/
@@ -79,13 +66,13 @@
         F.util.setHiddenFieldValue('F_STATE', fstate);
         //F.util.setHiddenFieldValue('F_STATE', encodeURIComponent(Ext.encode(getFState())));
         if (!enableAjax()) {
-            // 当前请求结束后必须重置 F.control_enable_ajax
-            F.control_enable_ajax = undefined;
+            // 当前请求结束后必须重置 F.controlEnableAjax
+            F.controlEnableAjax = undefined;
             F.util.setHiddenFieldValue('F_AJAX', 'false');
             theForm.submit();
         } else {
-            // 当前请求结束后必须重置 F.control_enable_ajax
-            F.control_enable_ajax = undefined;
+            // 当前请求结束后必须重置 F.controlEnableAjax
+            F.controlEnableAjax = undefined;
             F.util.setHiddenFieldValue('F_AJAX', 'true');
             var url = document.location.href;
             var urlHashIndex = url.indexOf('#');
@@ -94,17 +81,72 @@
             }
 
             var viewStateBeforeAJAX = F.util.getHiddenFieldValue('__VIEWSTATE');
+            var disabledButtonIdBeforeAJAX = F.getHidden('F_TARGET');
+
+            function ajaxSuccess(data, viewStateBeforeAJAX) {
+                /*
+                try {
+                    new Function(data)();
+                } catch (e) {
+                    createErrorWindow({
+                        statusText: "Execute JavaScript Exception",
+                        status: -1,
+                        responseText: util.htmlEncode(data)
+                    });
+                }
+                */
+
+                function processEnd() {
+                    // 启用AJAX发起时禁用的按钮
+                    if (disabledButtonIdBeforeAJAX) {
+                        F.enable(disabledButtonIdBeforeAJAX);
+                    }
+
+                    //隐藏正在加载提示
+                    ajaxStop();
+                }
+
+
+                // 如果显式返回false，则阻止AJAX回发
+                if (F.util.triggerBeforeAjaxSuccess(data) === false) {
+                    processEnd();
+                    return;
+                }
+
+                try {
+                    new Function('__VIEWSTATE', data)(viewStateBeforeAJAX);
+
+                    // 有可能响应返回后即关闭本窗体
+                    if (F && F.util) {
+                        F.util.triggerAjaxReady();
+                    }
+                } catch (e) {
+
+                    // 重新抛出异常
+                    throw e;
+
+                } finally {
+
+                    processEnd();
+                }
+
+            }
+
+            ajaxStart();
+
+
+            // 判断是否有文件上传
+            var isFileUpload = !!Ext.get(theForm).query('input[type=file]').length;
 
             Ext.Ajax.request({
                 form: theForm.id,
                 url: url,
-                isUpload: F.form_upload_file,
+                isUpload: isFileUpload, //F.form_upload_file,
                 //params: serializeForm(theForm) + '&X_AJAX=true',
                 success: function (data) {
                     var scripts = data.responseText;
 
-                    
-                    if (scripts && F.form_upload_file) {
+                    if (scripts && isFileUpload) {
                         // 文件上传时，输出内容经过encodeURIComponent编码（在ResponseFilter中的Close函数中）
                         //scripts = scripts.replace(/<\/?pre[^>]*>/ig, '');
                         scripts = decodeURIComponent(scripts);
@@ -132,12 +174,12 @@
                             F.util.triggerAjaxReady();
                         }
                         */
-                    }, 100);
+                    }, 0);
                 },
                 failure: function (data) {
-                    var lastDisabledButtonId = F.util.getHiddenFieldValue('F_TARGET');
-                    if (lastDisabledButtonId) {
-                        F.enable(lastDisabledButtonId);
+                    //var lastDisabledButtonId = F.util.getHiddenFieldValue('F_TARGET');
+                    if (disabledButtonIdBeforeAJAX) {
+                        F.enable(disabledButtonIdBeforeAJAX);
                     }
                     createErrorWindow(data);
                 },
@@ -154,12 +196,25 @@
 
     // 如果启用 Ajax，则所有对 __doPostBack 的调用都会到这里来
     function f__doPostBack(eventTarget, eventArgument) {
+        var enableAjax;
+        if (typeof (eventTarget) === 'boolean') {
+            enableAjax = eventTarget;
+            eventTarget = eventArgument;
+            eventArgument = arguments[2];
+        }
+
         // 回发页面之前延时 100 毫秒，确保页面上的操作完成（比如选中复选框的动作）
         window.setTimeout(function () {
+            
             // theForm variable will always exist, because we invoke the GetPostBackEventReference in PageManager.
             if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
                 theForm.__EVENTTARGET.value = eventTarget;
                 theForm.__EVENTARGUMENT.value = eventArgument;
+
+                // 设置当前请求是否为AJAX请求
+                if (typeof (enableAjax) === 'boolean') {
+                    F.controlEnableAjax = enableAjax;
+                }
 
                 f__doPostBack_internal();
             }
@@ -326,7 +381,15 @@
             if(cmp.f_cellEditing) {
                 // 可编辑单元格的表格
                 // 选中单元格
-                saveInHiddenField('SelectedCell', cmp.f_getSelectedCell().join(','));
+                //saveInHiddenField('SelectedCell', cmp.f_getSelectedCell().join(','));
+				
+				 // 选中单元格
+				var selectedCell = cmp.f_getSelectedCell();
+				if (selectedCell && selectedCell.length) {
+					saveInHiddenField('SelectedCell', JSON.stringify(selectedCell));
+				} else {
+					removeHiddenField('SelectedCell');
+				}
 
                 //// 新增行
                 //var newAddedRows = cmp.f_getNewAddedRows();
@@ -344,6 +407,7 @@
                     removeHiddenField('ModifiedData');
                 }
 
+                /*
                 // 删除的行索引列表
                 var deletedRows = cmp.f_getDeletedRows();
                 if (deletedRows.length > 0) {
@@ -351,11 +415,19 @@
                 } else {
                     removeHiddenField('DeletedRows');
                 }
+                */
 
             } else {
                 // 普通的表格
                 // 选中行索引列表
-                saveInHiddenField('SelectedRowIndexArray', cmp.f_getSelectedRows().join(','));
+                //saveInHiddenField('SelectedRowIndexArray', cmp.f_getSelectedRows().join(','));
+                // 选中行标识符列表
+                var selectedRows = cmp.f_getSelectedRows();
+                if (selectedRows && selectedRows.length) {
+                    saveInHiddenField('SelectedRows', JSON.stringify(selectedRows));
+                } else {
+                    removeHiddenField('SelectedRows');
+                }
             }
 
 
@@ -419,7 +491,8 @@
 
     // 显示“正在载入...”的提示信息
     function _showAjaxLoading(ajaxLoadingType) {
-        if (_requestCount > 0) {
+        // 延迟后，要再次检查当前有 AJAX 正在进行，才显示提示信息
+        if (__ajaxUnderwayCount > 0) {
 
             if (ajaxLoadingType === "default") {
                 F.ajaxLoadingDefault.setStyle('left', (Ext.getBody().getWidth() - F.ajaxLoadingDefault.getWidth()) / 2 + 'px');
@@ -433,8 +506,7 @@
 
     // 隐藏“正在载入...”的提示信息
     function _hideAjaxLoading(ajaxLoadingType) {
-        if (_requestCount <= 0) {
-            _requestCount = 0;
+        if (__ajaxUnderwayCount === 0) {
 
             if (ajaxLoadingType === "default") {
                 F.ajaxLoadingDefault.hide();
@@ -445,46 +517,71 @@
         }
     }
 
-    // 当前 Ajax 的并发请求数
-    var _requestCount = 0;
+    function ajaxStart() {
 
-    // 发起 Ajax 请求之前事件处理
-    Ext.Ajax.on('beforerequest', function (conn, options) {
-        _requestCount++;
+        // 计数加一
+        __ajaxUnderwayCount++;
+
+        // 仅在第一个 AJAX 发起时，延迟显示提示信息
+        if (__ajaxUnderwayCount !== 1) {
+            return;
+        }
 
         if (!enableAjaxLoading()) {
             // Do nothing
         } else {
             Ext.defer(_showAjaxLoading, 50, window, [ajaxLoadingType()]);
         }
+
+    }
+
+    function ajaxStop() {
+        // 计数减一
+        __ajaxUnderwayCount--;
+        if (__ajaxUnderwayCount < 0) {
+            __ajaxUnderwayCount = 0;
+        }
+
+        if (!enableAjaxLoading()) {
+            // ...
+        } else {
+           Ext.defer(_hideAjaxLoading, 0, window, [ajaxLoadingType()]);
+        }
+
+        if (__ajaxUnderwayCount === 0) {
+            F.controlEnableAjaxLoading = undefined;
+            F.controlAjaxLoadingType = undefined;
+        }
+    }
+
+    /*
+    // 当前 Ajax 的并发请求数
+    //var _requestCount = 0;
+    var _ajaxStarted = false;
+
+    // 发起 Ajax 请求之前事件处理
+    Ext.Ajax.on('beforerequest', function (conn, options) {
+        //_requestCount++;
+
+        _ajaxStarted = true;
+        ajaxStart();
     });
 
     // Ajax 请求结束
     Ext.Ajax.on('requestcomplete', function (conn, options) {
-        _requestCount--;
-
-        if (!enableAjaxLoading()) {
-            // ...
-        } else {
-            Ext.defer(_hideAjaxLoading, 0, window, [ajaxLoadingType()]);
-        }
-        F.control_enable_ajax_loading = undefined;
-        F.control_ajax_loading_type = undefined;
+        //_requestCount--;
+        _ajaxStarted = false;
+        
     });
 
     // Ajax 请求发生异常
     Ext.Ajax.on('requestexception', function (conn, options) {
-        _requestCount--;
+        //_requestCount--;
+        _ajaxStarted = false;
+        
 
-        if (!enableAjaxLoading()) {
-            // ...
-        } else {
-            Ext.defer(_hideAjaxLoading, 0, window, [ajaxLoadingType()]);
-        }
-        F.control_enable_ajax_loading = undefined;
-        F.control_ajax_loading_type = undefined;
     });
-
+    */
 
 
 

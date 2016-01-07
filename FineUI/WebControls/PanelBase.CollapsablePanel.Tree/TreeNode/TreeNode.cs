@@ -309,6 +309,27 @@ namespace FineUI
 
         #region Properties
 
+        private string _cssClass = String.Empty;
+        /// <summary>
+        /// 节点样式类
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue("")]
+        [Description("节点样式类")]
+        public string CssClass
+        {
+            get
+            {
+                return _cssClass;
+            }
+            set
+            {
+                _cssClass = value;
+            }
+        }
+
+
+
         private string _text = String.Empty;
         /// <summary>
         /// 文本

@@ -119,6 +119,8 @@ namespace FineUI
         public const string ENABLEFSTATECOMPRESS = "EnableFStateCompress";
         public const string IEEDGE = "IEEdge";
         public const string ENABLEFORMCHANGECONFIRM = "EnableFormChangeConfirm";
+
+        public const string FORMROWITEMSSPACE = "FormRowItemsSpace";
     }
 
     /// <summary>
@@ -182,6 +184,9 @@ namespace FineUI
         public const bool ENABLE_FSTATE_COMPRESS = false;
 
         public const bool ENABLE_FORMCHANGECONFIRM_DEFAULT = false;
+
+        public const int FORMROW_ITEMSSPACE_DEFAULT = 8;
+        public const string FORMROW_ITEMSSPACE_DEFAULT_STRING = "8";
     }
 
 

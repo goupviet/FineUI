@@ -16,7 +16,8 @@ namespace EmptyProjectNet20
 
         protected void btnHello_Click(object sender, EventArgs e)
         {
-            Alert.Show("你好 FineUI！", MessageBoxIcon.Warning);
+            MessageBox.Show("你好", icon: MessageBoxIcon.Error, buttons: MessageBoxButtons.YESNOCANCEL, yesText: "as", yesScript: "alert('haha')");
+            //Notify.Show("你好!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "test", NotifyIcon.Error, Target.Self);
         }
 
     }

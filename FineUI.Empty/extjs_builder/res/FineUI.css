@@ -168,3 +168,9 @@
     -webkit-user-select: text;
 }*/
 
+
+
+.f-formrow .x-column-form-item {
+	margin-bottom: 5px;
+}
+

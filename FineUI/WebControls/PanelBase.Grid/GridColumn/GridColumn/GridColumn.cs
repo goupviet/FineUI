@@ -1,18 +1,18 @@
-ï»¿
+
 #region Comment
 
 /*
- * Projectï¼š    FineUI
+ * Project£º    FineUI
  * 
  * FileName:    GridColumn.cs
  * CreatedOn:   2008-05-19
  * CreatedBy:   30372245@qq.com
  * 
  * 
- * Descriptionï¼š
+ * Description£º
  *      ->
  *   
- * Historyï¼š
+ * History£º
  *      ->
  * 
  * 
@@ -39,7 +39,7 @@ using System.Web.UI.WebControls;
 namespace FineUI
 {
     /// <summary>
-    /// è¡¨æ ¼åˆ—åŸºç±»ï¼ˆæŠ½è±¡ç±»ï¼‰
+    /// ±í¸ñÁĞ»ùÀà£¨³éÏóÀà£©
     /// </summary>
     [ToolboxItem(false)]
     [ParseChildren(true)]
@@ -52,11 +52,11 @@ namespace FineUI
         private Grid _grid;
 
         /// <summary>
-        /// è¡¨æ ¼å¯¹è±¡
+        /// ±í¸ñ¶ÔÏó
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Description("è¡¨æ ¼å¯¹è±¡")]
+        [Description("±í¸ñ¶ÔÏó")]
         public Grid Grid
         {
             get
@@ -101,11 +101,11 @@ namespace FineUI
         }
 
         /// <summary>
-        /// åˆ—ç´¢å¼•
+        /// ÁĞË÷Òı
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        [Description("åˆ—ç´¢å¼•")]
+        [Description("ÁĞË÷Òı")]
         public int ColumnIndex
         {
             get
@@ -116,76 +116,10 @@ namespace FineUI
 
         #endregion
 
-        #region Summary
-
-        /// <summary>
-        /// åˆè®¡ç±»åˆ«
-        /// </summary>
-        [Category(CategoryName.OPTIONS)]
-        [DefaultValue("")]
-        [Description("åˆè®¡ç±»åˆ«")]
-        public string SummaryType
-        {
-            get
-            {
-                return _summaryType;
-            }
-            set
-            {
-                _summaryType = value;
-            }
-        }
-
-        private string _summaryType = "";
-
-        /// <summary>
-        /// åˆè®¡æ˜¾ç¤º
-        /// </summary>
-        [Category(CategoryName.OPTIONS)]
-        [DefaultValue("")]
-        [Description("åˆè®¡æ˜¾ç¤º")]
-        public string SummaryRenderer
-        {
-            get
-            {
-                return _summaryRenderer;
-            }
-            set
-            {
-                _summaryRenderer = value;
-            }
-        }
-
-        private string _summaryRenderer = "";
-
-
-
-        private GridColumnDataType _dataType = GridColumnDataType.Default;
-
-        /// <summary>
-        /// å­—æ®µç±»å‹
-        /// </summary>
-        [Category(CategoryName.OPTIONS)]
-        [DefaultValue("")]
-        [Description("å­—æ®µç±»å‹")]
-        public GridColumnDataType DataType
-        {
-            get
-            {
-                return _dataType;
-            }
-            set
-            {
-                _dataType = value;
-            }
-        }
-
-        #endregion
-
         #region Properties
 
         ///// <summary>
-        ///// å½“å‰åˆ—çš„æ’åºè¡¨è¾¾å¼
+        ///// µ±Ç°ÁĞµÄÅÅĞò±í´ïÊ½
         ///// </summary>
         //[Browsable(false)]
         //[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -200,7 +134,7 @@ namespace FineUI
         //public string _sortDirection = "ASC";
 
         ///// <summary>
-        ///// æ’åºæ–¹å‘
+        ///// ÅÅĞò·½Ïò
         ///// </summary>
         //[Browsable(false)]
         //[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -219,11 +153,11 @@ namespace FineUI
         private string _sortField = String.Empty;
 
         /// <summary>
-        /// æ’åºå­—æ®µ
+        /// ÅÅĞò×Ö¶Î
         /// </summary>
         [Category(CategoryName.OPTIONS)]
         [DefaultValue("")]
-        [Description("æ’åºå­—æ®µ")]
+        [Description("ÅÅĞò×Ö¶Î")]
         public string SortField
         {
             get
@@ -240,11 +174,11 @@ namespace FineUI
         private bool _enableLock = false;
 
         /// <summary>
-        /// å…è®¸é”å®š
+        /// ÔÊĞíËø¶¨
         /// </summary>
         [Category(CategoryName.OPTIONS)]
         [DefaultValue(false)]
-        [Description("å…è®¸é”å®š")]
+        [Description("ÔÊĞíËø¶¨")]
         public bool EnableLock
         {
             get
@@ -261,11 +195,11 @@ namespace FineUI
         private bool _locked = false;
 
         /// <summary>
-        /// æ˜¯å¦å¤„äºé”å®šçŠ¶æ€
+        /// ÊÇ·ñ´¦ÓÚËø¶¨×´Ì¬
         /// </summary>
         [Category(CategoryName.OPTIONS)]
         [DefaultValue(false)]
-        [Description("æ˜¯å¦å¤„äºé”å®šçŠ¶æ€")]
+        [Description("ÊÇ·ñ´¦ÓÚËø¶¨×´Ì¬")]
         public bool Locked
         {
             get
@@ -282,11 +216,11 @@ namespace FineUI
         private bool _hidden = false;
 
         /// <summary>
-        /// æ˜¯å¦éšè—åˆ—
+        /// ÊÇ·ñÒş²ØÁĞ
         /// </summary>
         [Category(CategoryName.OPTIONS)]
         [DefaultValue(false)]
-        [Description("æ˜¯å¦éšè—åˆ—")]
+        [Description("ÊÇ·ñÒş²ØÁĞ")]
         public override bool Hidden
         {
             get
@@ -304,11 +238,11 @@ namespace FineUI
         private string _columnID = String.Empty;
 
         /// <summary>
-        /// åˆ—IDï¼ˆå¦‚æœæ²¡æœ‰è®¾ç½®ï¼Œåˆ™ä¸ºClientIDï¼‰
+        /// ÁĞID£¨Èç¹ûÃ»ÓĞÉèÖÃ£¬ÔòÎªClientID£©
         /// </summary>
         [Category(CategoryName.OPTIONS)]
         [DefaultValue("")]
-        [Description("åˆ—IDï¼ˆå¦‚æœæ²¡æœ‰è®¾ç½®ï¼Œåˆ™ä¸ºClientIDï¼‰")]
+        [Description("ÁĞID£¨Èç¹ûÃ»ÓĞÉèÖÃ£¬ÔòÎªClientID£©")]
         public string ColumnID
         {
             get
@@ -328,11 +262,11 @@ namespace FineUI
 
         private string _headerText = String.Empty;
         /// <summary>
-        /// æ ‡é¢˜æ æ˜¾ç¤ºçš„æ–‡å­—
+        /// ±êÌâÀ¸ÏÔÊ¾µÄÎÄ×Ö
         /// </summary>
         [Category(CategoryName.OPTIONS)]
         [DefaultValue("")]
-        [Description("æ ‡é¢˜æ æ˜¾ç¤ºçš„æ–‡å­—")]
+        [Description("±êÌâÀ¸ÏÔÊ¾µÄÎÄ×Ö")]
         public string HeaderText
         {
             get
@@ -347,11 +281,11 @@ namespace FineUI
 
         private string _headerToolTip = String.Empty;
         /// <summary>
-        /// æ ‡é¢˜æ æ–‡å­—çš„æç¤ºæ–‡æœ¬
+        /// ±êÌâÀ¸ÎÄ×ÖµÄÌáÊ¾ÎÄ±¾
         /// </summary>
         [Category(CategoryName.OPTIONS)]
         [DefaultValue("")]
-        [Description("æ ‡é¢˜æ æ–‡å­—çš„æç¤ºæ–‡æœ¬")]
+        [Description("±êÌâÀ¸ÎÄ×ÖµÄÌáÊ¾ÎÄ±¾")]
         public string HeaderToolTip
         {
             get
@@ -366,11 +300,11 @@ namespace FineUI
 
         private ToolTipType _headerTooltipType = ToolTipType.Qtip;
         /// <summary>
-        /// æ ‡é¢˜æ æ–‡å­—çš„æç¤ºæ–‡æœ¬ç±»å‹
+        /// ±êÌâÀ¸ÎÄ×ÖµÄÌáÊ¾ÎÄ±¾ÀàĞÍ
         /// </summary>
         [Category(CategoryName.OPTIONS)]
         [DefaultValue(ToolTipType.Qtip)]
-        [Description("æ ‡é¢˜æ æ–‡å­—çš„æç¤ºæ–‡æœ¬ç±»å‹")]
+        [Description("±êÌâÀ¸ÎÄ×ÖµÄÌáÊ¾ÎÄ±¾ÀàĞÍ")]
         public ToolTipType HeaderToolTipType
         {
             get
@@ -386,11 +320,11 @@ namespace FineUI
 
         private Unit _width = Unit.Empty;
         /// <summary>
-        /// åˆ—å®½åº¦
+        /// ÁĞ¿í¶È
         /// </summary>
         [Category(CategoryName.OPTIONS)]
         [DefaultValue(typeof(Unit), "")]
-        [Description("åˆ—å®½åº¦")]
+        [Description("ÁĞ¿í¶È")]
         public virtual Unit Width
         {
             get
@@ -403,35 +337,53 @@ namespace FineUI
             }
         }
 
-
+        private Unit _minWidth = Unit.Empty;
         /// <summary>
-        /// æ§åˆ¶å­æ§ä»¶çš„å°ºå¯¸ï¼ˆè¡¨æ ¼åˆ—ä½¿ç”¨HBoxå¸ƒå±€ï¼‰
+        /// ×îĞ¡ÁĞ¿í¶È
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue(typeof(Unit), "")]
+        [Description("×îĞ¡ÁĞ¿í¶È")]
+        public virtual Unit MinWidth
+        {
+            get
+            {
+                return _minWidth;
+            }
+            set
+            {
+                _minWidth = value;
+            }
+        }
+
+
+        private int _boxFlex = 0;
+        /// <summary>
+        /// ¿ØÖÆ×Ó¿Ø¼şµÄ³ß´ç£¨±í¸ñÁĞÊ¹ÓÃHBox²¼¾Ö£©
         /// </summary>
         [Category(CategoryName.LAYOUT)]
         [DefaultValue(0)]
-        [Description("æ§åˆ¶å­æ§ä»¶çš„å°ºå¯¸ï¼ˆè¡¨æ ¼åˆ—ä½¿ç”¨HBoxå¸ƒå±€ï¼‰")]
+        [Description("¿ØÖÆ×Ó¿Ø¼şµÄ³ß´ç£¨±í¸ñÁĞÊ¹ÓÃHBox²¼¾Ö£©")]
         public int BoxFlex
         {
             get
             {
-                object obj = FState["BoxFlex"];
-                return obj == null ? 0 : (int)obj;
+                return _boxFlex;
             }
             set
             {
-                FState["BoxFlex"] = value;
+                _boxFlex = value;
             }
         }
 
 
         private bool _expandUnusedSpace = false;
-
         /// <summary>
-        /// æ­¤åˆ—ä¼šæ‰©å±•æ‰€æœ‰æœªä½¿ç”¨çš„å®½åº¦
+        /// ´ËÁĞ»áÀ©Õ¹ËùÓĞÎ´Ê¹ÓÃµÄ¿í¶È
         /// </summary>
         [Category(CategoryName.OPTIONS)]
         [DefaultValue(false)]
-        [Description("æ­¤åˆ—ä¼šæ‰©å±•æ‰€æœ‰æœªä½¿ç”¨çš„å®½åº¦")]
+        [Description("´ËÁĞ»áÀ©Õ¹ËùÓĞÎ´Ê¹ÓÃµÄ¿í¶È")]
         public bool ExpandUnusedSpace
         {
             get
@@ -449,11 +401,11 @@ namespace FineUI
         private TextAlign _textalign = TextAlign.Left;
 
         /// <summary>
-        /// æ–‡æœ¬çš„æ’åˆ—ä½ç½®
+        /// ÎÄ±¾µÄÅÅÁĞÎ»ÖÃ
         /// </summary>
         [Category(CategoryName.OPTIONS)]
         [DefaultValue(TextAlign.Left)]
-        [Description("æ–‡æœ¬çš„æ’åˆ—ä½ç½®")]
+        [Description("ÎÄ±¾µÄÅÅÁĞÎ»ÖÃ")]
         public TextAlign TextAlign
         {
             get
@@ -467,14 +419,14 @@ namespace FineUI
         }
         */
 
-        private TextAlign? _textalign = FineUI.TextAlign.Center;
+        private TextAlign? _textalign = null;
 
         /// <summary>
-        /// æ–‡æœ¬çš„æ’åˆ—ä½ç½®
+        /// ÎÄ±¾µÄÅÅÁĞÎ»ÖÃ
         /// </summary>
         [Category(CategoryName.OPTIONS)]
-        [DefaultValue(FineUI.TextAlign.Center)]
-        [Description("æ–‡æœ¬çš„æ’åˆ—ä½ç½®")]
+        [DefaultValue(null)]
+        [Description("ÎÄ±¾µÄÅÅÁĞÎ»ÖÃ")]
         public TextAlign? TextAlign
         {
             get
@@ -490,11 +442,11 @@ namespace FineUI
 
         private bool _enableHeaderMenu = true;
         /// <summary>
-        /// å¯ç”¨è¡¨å¤´èœå•
+        /// ÆôÓÃ±íÍ·²Ëµ¥
         /// </summary>
         [Category(CategoryName.OPTIONS)]
         [DefaultValue(true)]
-        [Description("å¯ç”¨è¡¨å¤´èœå•")]
+        [Description("ÆôÓÃ±íÍ·²Ëµ¥")]
         public virtual bool EnableHeaderMenu
         {
             get
@@ -510,11 +462,11 @@ namespace FineUI
 
         private bool _enableColumnHide = true;
         /// <summary>
-        /// å¯ç”¨éšè—åˆ—åŠŸèƒ½
+        /// ÆôÓÃÒş²ØÁĞ¹¦ÄÜ
         /// </summary>
         [Category(CategoryName.OPTIONS)]
         [DefaultValue(true)]
-        [Description("å¯ç”¨éšè—åˆ—åŠŸèƒ½")]
+        [Description("ÆôÓÃÒş²ØÁĞ¹¦ÄÜ")]
         public virtual bool EnableColumnHide
         {
             get
@@ -529,7 +481,7 @@ namespace FineUI
 
 
         /// <summary>
-        /// è¡¨æ ¼å•å…ƒæ ¼å®¹å™¨æ ·å¼ç±»
+        /// ±í¸ñµ¥Ôª¸ñÈİÆ÷ÑùÊ½Àà
         /// </summary>
         internal virtual string InnerCls
         {
@@ -545,19 +497,19 @@ namespace FineUI
         #region virtual GetColumnValue/GetColumnState/PersistState
 
         /// <summary>
-        /// å–å¾—åˆ—å¤´æ¸²æŸ“åçš„HTML
+        /// È¡µÃÁĞÍ·äÖÈ¾ºóµÄHTML
         /// </summary>
-        /// <returns>æ¸²æŸ“åçš„HTML</returns>
+        /// <returns>äÖÈ¾ºóµÄHTML</returns>
         internal virtual string GetHeaderValue()
         {
             return String.IsNullOrEmpty(HeaderText) ? "&nbsp;" : HeaderText;
         }
 
         /// <summary>
-        /// å–å¾—åˆ—æ¸²æŸ“åçš„HTML
+        /// È¡µÃÁĞäÖÈ¾ºóµÄHTML
         /// </summary>
-        /// <param name="row">è¡¨æ ¼è¡Œå®ä¾‹</param>
-        /// <returns>æ¸²æŸ“åçš„HTML</returns>
+        /// <param name="row">±í¸ñĞĞÊµÀı</param>
+        /// <returns>äÖÈ¾ºóµÄHTML</returns>
         internal virtual object GetColumnValue(GridRow row)
         {
             return String.Empty;
@@ -565,7 +517,7 @@ namespace FineUI
 
 
         /// <summary>
-        /// æœ¬åˆ—æ˜¯å¦éœ€è¦ä¿å­˜çŠ¶æ€ï¼ˆç›®å‰åªæœ‰CheckBoxFieldå®ç°äº†è¿™ä¸ªå®šä¹‰ï¼‰
+        /// ±¾ÁĞÊÇ·ñĞèÒª±£´æ×´Ì¬£¨Ä¿Ç°Ö»ÓĞCheckBoxFieldÊµÏÖÁËÕâ¸ö¶¨Òå£©
         /// </summary>
         internal virtual bool PersistState
         {
@@ -576,7 +528,7 @@ namespace FineUI
         }
 
         /// <summary>
-        /// è·å–åˆ—çš„çŠ¶æ€
+        /// »ñÈ¡ÁĞµÄ×´Ì¬
         /// </summary>
         /// <param name="row"></param>
         /// <returns></returns>
@@ -590,15 +542,15 @@ namespace FineUI
         #region OnPreRender
 
         /// <summary>
-        /// æ¸²æŸ“ HTML ä¹‹å‰è°ƒç”¨ï¼ˆAJAXå›å‘ï¼‰
+        /// äÖÈ¾ HTML Ö®Ç°µ÷ÓÃ£¨AJAX»Ø·¢£©
         /// </summary>
         protected override void OnAjaxPreRender()
         {
-            // è¡¨æ ¼åˆ—æ§ä»¶ä¸ç›‘è§†åˆ—å±æ€§çš„æ”¹å˜
+            // ±í¸ñÁĞ¿Ø¼ş²»¼àÊÓÁĞÊôĞÔµÄ¸Ä±ä
         }
 
         /// <summary>
-        /// æ¸²æŸ“ HTML ä¹‹å‰è°ƒç”¨ï¼ˆé¡µé¢ç¬¬ä¸€æ¬¡åŠ è½½æˆ–è€…æ™®é€šå›å‘ï¼‰
+        /// äÖÈ¾ HTML Ö®Ç°µ÷ÓÃ£¨Ò³ÃæµÚÒ»´Î¼ÓÔØ»òÕßÆÕÍ¨»Ø·¢£©
         /// </summary>
         protected override void OnFirstPreRender()
         {
@@ -607,13 +559,13 @@ namespace FineUI
             
             if (this is TemplateField && (this as TemplateField).RenderAsRowExpander)
             {
-                // è¡Œæ‰©å±•åˆ—éœ€è¦ç‰¹æ®Šå¤„ç†
+                // ĞĞÀ©Õ¹ÁĞĞèÒªÌØÊâ´¦Àí
             }
             else
             {
                 //JsObjectBuilder columnBuilder = new JsObjectBuilder();
 
-                // åˆ—çš„ç¦ç”¨ä¼šåæ˜ åˆ°æ¯ä¸ªå•å…ƒæ ¼ä¸Šï¼Œè€Œä¸æ˜¯åœ¨åˆ—å¤´
+                // ÁĞµÄ½ûÓÃ»á·´Ó³µ½Ã¿¸öµ¥Ôª¸ñÉÏ£¬¶ø²»ÊÇÔÚÁĞÍ·
                 OB.RemoveProperty("disabled");
 
                 if (this is RowNumberField)
@@ -656,7 +608,7 @@ namespace FineUI
                 }
 
 
-                // å…è®¸åˆ—é”å®š
+                // ÔÊĞíÁĞËø¶¨
                 if (Grid.AllowColumnLocking)
                 {
                     if (EnableLock)
@@ -688,7 +640,7 @@ namespace FineUI
                 OB.AddProperty("dataIndex", ColumnID);
                 OB.AddProperty("id", ColumnID);
 
-                // æœåŠ¡å™¨ç«¯ä½¿ç”¨çš„ColumnIndex
+                // ·şÎñÆ÷¶ËÊ¹ÓÃµÄColumnIndex
                 OB.AddProperty("f_columnIndex", ColumnIndex);
 
 
@@ -700,7 +652,7 @@ namespace FineUI
                 */
                 if (TextAlign != null)
                 {
-                    // è¡Œåºå·åˆ—é»˜è®¤é å³æ˜¾ç¤ºï¼›å…¶ä»–é å·¦æ˜¾ç¤ºï¼›æ‰€ä»¥åªè¦å®šä¹‰äº† TextAlignï¼Œå°±è¾“å‡º
+                    // ĞĞĞòºÅÁĞÄ¬ÈÏ¿¿ÓÒÏÔÊ¾£»ÆäËû¿¿×óÏÔÊ¾£»ËùÒÔÖ»Òª¶¨ÒåÁË TextAlign£¬¾ÍÊä³ö
                     OB.AddProperty("align", TextAlignName.GetName(TextAlign.Value));
                 }
 
@@ -711,6 +663,11 @@ namespace FineUI
                 else if (BoxFlex != 0)
                 {
                     OB.AddProperty("flex", BoxFlex);
+                }
+
+                if (MinWidth != Unit.Empty)
+                {
+                    OB.AddProperty("minWidth", MinWidth.Value);
                 }
 
                 if (ExpandUnusedSpace)
@@ -743,37 +700,16 @@ namespace FineUI
                     OB.AddProperty("hideable", false);
                 }
 
-                if (this is BoundField)
-                {
-                    if (DataType == GridColumnDataType.Default)
-                    {
-                        // do nothing
-                    }
-                    else
-                    {
-                        OB.AddProperty("xtype", GridColumnDataTypeHelper.GetDescription(DataType));
-                    }
-                }
 
                 if (Grid.EnableSummary)
                 {
                     if (this is RowNumberField)
                     {
-                        // åºå·åˆ— æ²¡æœ‰åˆè®¡
+                        // ĞòºÅÁĞ Ã»ÓĞºÏ¼Æ
                     }
                     else
                     {
-                        if (string.IsNullOrEmpty(SummaryType) && string.IsNullOrEmpty(SummaryRenderer))
-                        {
-                            OB.AddProperty("summaryType", String.Format("F.util.summaryType('{0}')", Grid.ClientID), true);
-                        }
-                        else
-                        {
-                            if (!string.IsNullOrEmpty(SummaryType))
-                                OB.AddProperty("summaryType", SummaryType);
-                            if (!string.IsNullOrEmpty(SummaryRenderer))
-                                OB.AddProperty("summaryRenderer", SummaryRenderer, true);
-                        }
+                        OB.AddProperty("summaryType", String.Format("F.util.summaryType('{0}')", Grid.ClientID), true);
                     }
                 }
 
@@ -791,7 +727,7 @@ namespace FineUI
         #region AddGridColumnScript
         
         /// <summary>
-        /// æ·»åŠ è¡¨æ ¼åˆ—çš„æ¸²æŸ“è„šæœ¬
+        /// Ìí¼Ó±í¸ñÁĞµÄäÖÈ¾½Å±¾
         /// </summary>
         /// <param name="jsContent"></param>
         protected void AddGridColumnScript(string jsContent)

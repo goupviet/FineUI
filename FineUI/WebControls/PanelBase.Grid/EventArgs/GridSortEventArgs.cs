@@ -41,7 +41,6 @@ namespace FineUI
         public string SortField
         {
             get { return _sortField; }
-            set { _sortField = value; }
         }
 
 
@@ -53,7 +52,6 @@ namespace FineUI
         public string SortDirection
         {
             get { return _sortDirection; }
-            set { _sortDirection = value; }
         }
 
         private int _columnIndex;
@@ -64,8 +62,19 @@ namespace FineUI
         public int ColumnIndex
         {
             get { return _columnIndex; }
-            set { _columnIndex = value; }
         }
+
+
+        private string _columnID;
+
+        /// <summary>
+        /// 列ID
+        /// </summary>
+        public string ColumnID
+        {
+            get { return _columnID; }
+        }
+
 
 
         /// <summary>
@@ -74,11 +83,13 @@ namespace FineUI
         /// <param name="sortField">排序字段</param>
         /// <param name="sortDirection">排序方向</param>
         /// <param name="columnIndex">列索引</param>
-        public GridSortEventArgs(string sortField, string sortDirection, int columnIndex)
+        /// <param name="columnID">列</param>
+        public GridSortEventArgs(string sortField, string sortDirection, int columnIndex, string columnID)
         {
             _sortField = sortField;
             _sortDirection = sortDirection;
             _columnIndex = columnIndex;
+            _columnID = columnID;
         }
 
     }

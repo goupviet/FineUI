@@ -316,6 +316,26 @@ namespace FineUI
             }
         }
 
+        /// <summary>
+        /// 启用树中的文字选择
+        /// </summary>
+        [Category(CategoryName.OPTIONS)]
+        [DefaultValue(false)]
+        [Description("启用树中的文字选择")]
+        public bool EnableTextSelection
+        {
+            get
+            {
+                object obj = FState["EnableTextSelection"];
+                return obj == null ? false : (bool)obj;
+            }
+            set
+            {
+                FState["EnableTextSelection"] = value;
+            }
+        }
+
+
         #endregion
 
         #region DataSource
@@ -598,10 +618,10 @@ namespace FineUI
 
                 treeNode.EnableExpandEvent = ja2[19].Value<int>() == 1 ? true : false;
                 treeNode.EnableCollapseEvent = ja2[20].Value<int>() == 1 ? true : false;
-                
 
+                treeNode.CssClass = ja2[21].Value<string>();
 
-                JArray childNodes = ja2[21].Value<JArray>();
+                JArray childNodes = ja2[22].Value<JArray>();
                 if (childNodes != null && childNodes.Count > 0)
                 {
                     FromNodesJArray(childNodes, treeNode.Nodes);
@@ -639,7 +659,9 @@ namespace FineUI
                 // 19 - EnableExpandEvent
                 // 20 - EnableCollapseEvent
 
-                // 21 - Nodes
+                // 21 - CssClass
+
+                // 22 - Nodes
                 ja2.Add(node.Text);
                 ja2.Add(node.Leaf ? 1 : 0);
                 ja2.Add(node.NodeID);
@@ -668,7 +690,8 @@ namespace FineUI
 
                 ja2.Add(node.EnableExpandEvent ? 1 : 0);
                 ja2.Add(node.EnableCollapseEvent ? 1 : 0);
-                
+
+                ja2.Add(node.CssClass);
 
                 if (node.Nodes != null && node.Nodes.Count > 0)
                 {
@@ -1033,6 +1056,22 @@ namespace FineUI
             base.OnFirstPreRender();
 
             //ResourceManager.Instance.AddJavaScriptComponent("tree");
+
+            #region viewConfig
+
+            JsObjectBuilder viewBuilder = new JsObjectBuilder();
+
+            if (EnableTextSelection)
+            {
+                viewBuilder.AddProperty("enableTextSelection", true);
+            }
+
+            if (viewBuilder.Count > 0)
+            {
+                OB.AddProperty("viewConfig", viewBuilder);
+            }
+            
+            #endregion
 
             #region options
 

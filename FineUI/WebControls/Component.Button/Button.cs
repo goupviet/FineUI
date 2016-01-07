@@ -47,7 +47,7 @@ namespace FineUI
     [ParseChildren(true)]
     [PersistChildren(false)]
     [ControlBuilder(typeof(NotAllowWhitespaceLiteralsBuilder))]
-    public class Button : Component, IPostBackEventHandler, IPostBackDataHandler
+    public class Button : BoxComponent, IPostBackEventHandler, IPostBackDataHandler
     {
         #region Constructor
 
@@ -176,25 +176,6 @@ namespace FineUI
             set
             {
                 FState["Icon"] = value;
-            }
-        }
-
-        /// <summary>
-        /// [AJAX属性]SVG图标
-        /// </summary>
-        [Category(CategoryName.OPTIONS)]
-        [DefaultValue("")]
-        [Description("[AJAX属性]SVG图标")]
-        public string Glyph
-        {
-            get
-            {
-                object obj = FState["Glyph"];
-                return obj == null ? "" : obj.ToString();
-            }
-            set
-            {
-                FState["Glyph"] = value;
             }
         }
 
@@ -690,11 +671,6 @@ namespace FineUI
                 }
             }
 
-            if (!string.IsNullOrEmpty(Glyph) && !string.IsNullOrEmpty(FontAwesomeHelper.GetValue(Glyph)))
-            {
-                OB.AddProperty("glyph", FontAwesomeHelper.GetValue(Glyph));
-            }
-
             #endregion
 
             #region Click
@@ -850,7 +826,7 @@ namespace FineUI
             {
                 if (!String.IsNullOrEmpty(disableControlJavascriptID))
                 {
-                    postBackScript += String.Format("F.disable('{0}');", disableControlJavascriptID);
+                    postBackScript += String.Format("F.f_disable('{0}');", disableControlJavascriptID);
                 }
                 postBackScript += postBackEventReference;
             }

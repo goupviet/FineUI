@@ -53,10 +53,10 @@ namespace FineUI
         /// 手风琴布局（只用于Accordion控件）
         /// </summary>
         Accordion,
-        /// <summary>
-        /// 表单布局（用于SimpleForm和Form控件）
-        /// </summary>
-        Form,
+        ///// <summary>
+        ///// 表单布局（用于SimpleForm和Form控件）
+        ///// </summary>
+        //Form,
         /// <summary>
         /// 卡片布局（只用于TabStrip控件）
         /// </summary>
@@ -115,9 +115,9 @@ namespace FineUI
                 case Layout.Fit:
                     result = "fit";
                     break;
-                case Layout.Form:
-                    result = "form";
-                    break;
+                //case Layout.Form:
+                //    result = "form";
+                //    break;
                 case Layout.Absolute:
                     result = "absolute";
                     break;

@@ -47,6 +47,11 @@ namespace FineUI
         /// <returns>整型数组</returns>
         public static int[] IntArrayFromJArray(JArray ja)
         {
+            if (ja == null || ja.Count == 0)
+            {
+                return new int[0];
+            }
+
             int length = ja.Count;
 
             int[] array = new int[length];
@@ -64,6 +69,11 @@ namespace FineUI
         /// <returns>字符串数组</returns>
         public static string[] StringArrayFromJArray(JArray ja)
         {
+            if (ja == null || ja.Count == 0)
+            {
+                return new string[0];
+            }
+
             int length = ja.Count;
 
             string[] array = new string[length];
@@ -81,6 +91,11 @@ namespace FineUI
         /// <returns>对象数组</returns>
         public static object[] ObjectArrayFromJArray(JArray ja)
         {
+            if (ja == null || ja.Count == 0)
+            {
+                return new object[0];
+            }
+
             int length = ja.Count;
 
             object[] array = new object[length];

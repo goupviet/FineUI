@@ -1,0 +1,27 @@
+.ux-notification-icon-information {
+    background-image: url('/extjs/res/images/n-information.png');
+}
+
+.ux-notification-icon-error {
+    background-image: url('/extjs/res/images/n-error.png');
+}
+
+.ux-notification-icon-warn {
+    background-image: url('/extjs/res/images/n-warn.png');
+}
+
+.ux-notification-icon-success {
+    background-image: url('/extjs/res/images/n-success.png');
+}
+
+.ux-notification-light {
+    background-color: #F0F0F0;
+}
+
+    .ux-notification-light .x-window-body {
+        text-align: center;
+        padding: 25px 24px;
+        width: 425px;
+        background-color: transparent;
+        border: 0 solid white;
+    }
